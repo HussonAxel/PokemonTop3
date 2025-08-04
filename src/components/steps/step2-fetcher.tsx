@@ -201,12 +201,12 @@ export default function Step2Fetcher() {
         </CardHeader>
         {selector === "types" && (
           <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
               {pokemonsData?.pokemon?.map(
                 (pokemonType: PokeAPI.TypePokemon) => (
                   <div
                     key={`${pokemonType.pokemon.name}`}
-                    className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors ${
+                    className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors items-center ${
                       search.pokemons.includes(
                         `${extractPokemonIdFromUrl(pokemonType.pokemon.url)}-${
                           search.type
@@ -232,7 +232,7 @@ export default function Step2Fetcher() {
                         ],
                       }}
                     >
-                      <div className="flex items-center align-center">
+                      <div className="flex items-center align-center content-center self-center">
                         <RadioGroupItem
                           value={pokemonType.pokemon.name}
                           id={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
@@ -263,7 +263,7 @@ export default function Step2Fetcher() {
         )}
         {selector === "generations" && (
           <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
               {pokemonsData?.map((pokemon: PokeAPI.NamedAPIResource) => (
                 <div
                   key={`${pokemon.name}`}
@@ -274,7 +274,7 @@ export default function Step2Fetcher() {
                       ? "checked"
                       : "unchecked"
                   }
-                  className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5"
+                  className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 items-center"
                 >
                   <Link
                     to="/"
@@ -295,7 +295,7 @@ export default function Step2Fetcher() {
                       ],
                     }}
                   >
-                    <div className="flex justify-center">
+                    <div className="flex justify-center items-center">
                       <Image
                         src={
                           shiny === "shiny"
