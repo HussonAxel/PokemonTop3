@@ -23,12 +23,12 @@ import type { PokeAPI } from "pokeapi-types";
 import { GENERATIONS } from "@/utils/consts";
 
 export default function Step2Fetcher() {
+  let typeIsSelected;
   const navigate = useNavigate();
   const search = useSearch({ from: "/" });
   const selector = search.selector;
   const shiny = search.version;
   const generation = search.generation;
-
   const { data: types } = useGetTypes();
   const filteredTypes =
     types?.results
@@ -90,6 +90,15 @@ export default function Step2Fetcher() {
   };
 
   const navigateToNext = () => {
+    const type = search.type;
+    const pokemons = search.pokemons;
+
+    typeIsSelected = type
+      ? pokemons.some((pokemon: string) => pokemon.endsWith(`-${type}`))
+      : false;
+
+    if (!typeIsSelected) return;
+
     const searchParams: any = { ...search };
 
     if (selector === "types") {
