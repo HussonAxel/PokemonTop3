@@ -197,11 +197,17 @@ export default function Step1Builder({ search }: { search: any }) {
                   step: search.step + 1,
                   ...(search.selector === "types" && { type: firstType }),
                   ...(search.selector === "generations" && {
-                    generation: GENERATIONS[0].end.toString(),
+                    generation: [
+                      GENERATIONS[0].start.toString(),
+                      GENERATIONS[0].end.toString(),
+                    ],
                   }),
                   ...(search.selector === "both" && {
                     type: firstType,
-                    generation: GENERATIONS[0].end.toString(),
+                    generation: [
+                      GENERATIONS[0].start.toString(),
+                      GENERATIONS[0].end.toString(),
+                    ],
                   }),
                 },
               });

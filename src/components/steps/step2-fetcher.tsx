@@ -19,19 +19,20 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
+import { Image } from "@unpic/react";
+
 export default function Step2Fetcher() {
   const search = useSearch({ from: "/" });
   const selector = search.selector;
+  const shiny = search.version;
 
   const pokemonsData =
     selector === "types"
       ? useGetPokemonsPerType(search.type || "")
-      : useGetPokemonsPerGeneration(search.generation || "");
+      : useGetPokemonsPerGeneration(search.generation?.[1] || "");
 
-  // Vérification sécurisée avant d'accéder aux données
   console.log(pokemonsData?.data?.results);
 
-  // Affichage d'un état de chargement
   if (pokemonsData.isLoading) {
     return (
       <Card className="w-full mx-auto">
@@ -48,7 +49,6 @@ export default function Step2Fetcher() {
     );
   }
 
-  // Affichage d'une erreur
   if (pokemonsData.error) {
     return (
       <Card className="w-full mx-auto">
@@ -93,10 +93,20 @@ export default function Step2Fetcher() {
                       className="order-1 after:absolute after:inset-0"
                       defaultChecked={false}
                     />
-                    <img
-                      src={`/assets/sprites/base/${extractPokemonIdFromUrl(pokemon.pokemon.url)}.webp`}
-                      alt={pokemon.pokemon.name}
-                      className="w-24 h-24 md:w-28 md:h-28 transition-transform duration-300"
+                    <Image
+                      src={
+                        shiny === "shiny"
+                          ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
+                              pokemon.pokemon.url
+                            )}.webp`
+                          : `/assets/sprites/base/${extractPokemonIdFromUrl(
+                              pokemon.pokemon.url
+                            )}.webp`
+                      }
+                      layout="constrained"
+                      width={150}
+                      height={150}
+                      alt="A lovely bath"
                     />
                   </div>
                   <Label
@@ -124,10 +134,20 @@ export default function Step2Fetcher() {
                       className="order-1 after:absolute after:inset-0"
                       defaultChecked={false}
                     />
-                    <img
-                      src={`/assets/sprites/base/${extractPokemonIdFromUrl(pokemon.url)}.webp`}
-                      alt={pokemon.name}
-                      className="w-24 h-24 md:w-28 md:h-28 transition-transform duration-300"
+                    <Image
+                      src={
+                        shiny === "shiny"
+                          ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
+                              pokemon.url
+                            )}.webp`
+                          : `/assets/sprites/base/${extractPokemonIdFromUrl(
+                              pokemon.url
+                            )}.webp`
+                      }
+                      layout="constrained"
+                      width={150}
+                      height={150}
+                      alt="A lovely bath"
                     />
                   </div>
                   <Label htmlFor={`${pokemon.name}-${pokemon.url}`}>
