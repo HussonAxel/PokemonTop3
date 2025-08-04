@@ -80,7 +80,7 @@ export default function Step2Fetcher() {
         </CardHeader>
         {selector === "types" && (
           <CardContent>
-            <div className="grid grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
               {pokemonsData?.data?.pokemon?.map((pokemon) => (
                 <div
                   key={`${pokemon.pokemon.name}`}
@@ -121,7 +121,7 @@ export default function Step2Fetcher() {
         )}
         {selector === "generations" && (
           <CardContent>
-            <div className="grid grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
               {pokemonsData?.data?.results?.map((pokemon) => (
                 <div
                   key={`${pokemon.name}`}
