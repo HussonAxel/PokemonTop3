@@ -1,4 +1,4 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, useSearch, redirect } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -23,12 +23,15 @@ import type { PokeAPI } from "pokeapi-types";
 import { GENERATIONS } from "@/utils/consts";
 
 export default function Step2Fetcher() {
-  let typeIsSelected;
+  let typeIsSelected, generationIsSelected;
   const navigate = useNavigate();
   const search = useSearch({ from: "/" });
   const selector = search.selector;
   const shiny = search.version;
+  const type = search.type;
+  const pokemons = search.pokemons;
   const generation = search.generation;
+
   const { data: types } = useGetTypes();
   const filteredTypes =
     types?.results
@@ -90,14 +93,47 @@ export default function Step2Fetcher() {
   };
 
   const navigateToNext = () => {
-    const type = search.type;
-    const pokemons = search.pokemons;
+    if (type) {
+      typeIsSelected = type
+        ? pokemons.some((pokemon: string) => pokemon.endsWith(`-${type}`))
+        : false;
+      if (!typeIsSelected) return;
+    }
 
-    typeIsSelected = type
-      ? pokemons.some((pokemon: string) => pokemon.endsWith(`-${type}`))
-      : false;
+    if (generation) {
+      const currentGenerationName =
+        GENERATIONS[getCurrentGenerationIndex()]?.name;
+      generationIsSelected = currentGenerationName
+        ? pokemons.some((pokemon: string) =>
+            pokemon.endsWith(`-${currentGenerationName}`)
+          )
+        : false;
 
-    if (!typeIsSelected) return;
+      if (!generationIsSelected) {
+        const generationStart = parseInt(generation[0]);
+        const generationEnd = parseInt(generation[1]);
+        generationIsSelected = pokemons.some((pokemon: string) => {
+          const pokemonId = parseInt(pokemon.split("-")[0]);
+          return pokemonId >= generationStart && pokemonId <= generationEnd;
+        });
+      }
+
+      if (!generationIsSelected) return;
+    }
+
+    if (
+      (type && pokemons.length === 18) ||
+      (generation && pokemons.length === 9)
+    ) {
+      navigate({
+        to: "/",
+        search: {
+          ...search,
+          step: search.step + 1,
+        },
+      });
+      return;
+    }
 
     const searchParams: any = { ...search };
 

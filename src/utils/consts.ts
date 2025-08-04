@@ -84,3 +84,10 @@ export const GENERATIONS = [
     end: 1025,
   },
 ];
+
+export const regionalBirds = [
+  {
+    name: "",
+    id: 1,
+  },
+];
