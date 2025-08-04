@@ -39,7 +39,7 @@ export default function Step3Optionals() {
       </CardHeader>
       {pokemonOptions.includes("starters") && (
         <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-          <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
+          <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto py-2 shadow-md shadow-gray-200 bg-clip-padding w-9/10 m-auto border-[0.5px] border-gray-200 p-12 rounded-md my-16">
             {starters?.map((pokemon) => (
               <div
                 key={`${pokemon.name}`}
