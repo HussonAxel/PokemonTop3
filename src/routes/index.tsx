@@ -11,7 +11,7 @@ const stepsSearchSchema = z.object({
   selectRoster: z.string().default(""),
   type: z.string().optional(),
   generation: z.array(z.string()).length(2).optional(),
-  pokemons: z.array(z.number()).default([]),
+  pokemons: z.array(z.string()).default([]),
 });
 
 export const Route = createFileRoute("/")({

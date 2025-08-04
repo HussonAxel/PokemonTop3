@@ -124,7 +124,7 @@ export default function Step1Builder({ search }: { search: any }) {
               const isChecked = search.pokemonsOptions.includes(item.value);
               const newPokemonsOptions = isChecked
                 ? search.pokemonsOptions.filter(
-                    (option) => option !== item.value
+                    (option: any) => option !== item.value
                   )
                 : [...search.pokemonsOptions, item.value];
 
