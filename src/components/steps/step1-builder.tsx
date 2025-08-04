@@ -41,7 +41,7 @@ export default function Step1Builder({ search }: { search: any }) {
   const prefetchPokemons = prefetchPokemonPerType();
   const prefetchPokemonsGeneration = prefetchPokemonsPerGeneration();
   return (
-    <Card className="max-w-full lg:max-w-1/2 m-auto">
+    <Card className="max-w-full lg:max-w-3/4 m-auto">
       <CardHeader className="flex flex-col gap-8">
         <CardTitle>Favorites Pokémon Picker</CardTitle>
         <CardDescription className="text-md">
@@ -119,7 +119,7 @@ export default function Step1Builder({ search }: { search: any }) {
           <legend className="text-foreground leading-none font-semibold">
             Pokemons options
           </legend>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-wrap gap-2">
             {pokemonsOptions.map((item) => {
               const isChecked = search.pokemonsOptions.includes(item.value);
               const newPokemonsOptions = isChecked

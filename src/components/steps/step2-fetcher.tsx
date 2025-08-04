@@ -1,4 +1,4 @@
-import { useNavigate, useSearch, redirect } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -21,6 +21,17 @@ import { Link } from "@tanstack/react-router";
 
 import type { PokeAPI } from "pokeapi-types";
 import { GENERATIONS } from "@/utils/consts";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Zap,
+  Sparkles,
+  Layers,
+  Type,
+  Hash,
+} from "lucide-react";
 
 export default function Step2Fetcher() {
   let typeIsSelected, generationIsSelected;
@@ -201,36 +212,54 @@ export default function Step2Fetcher() {
   return (
     <>
       <Card className="w-full mx-auto">
-        <CardHeader className="flex flex-col gap-2 justify-center items-center">
-          <CardTitle className="text-2xl font-bold">
-            Step {search.step} - {selector}
-          </CardTitle>
-          <CardDescription>
-            You have chosen to pick pokemons based on their {selector}. You will
-            now have a multi step form to select your desired pokemons.
-          </CardDescription>
+        <CardHeader className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex items-center gap-3">
+            <div className="text-center">
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Étape {search.step} - Sélection des Pokémon
+              </CardTitle>
+            </div>
+          </div>
 
-          <div className="flex gap-4 items-center mt-4">
+          <div className="flex gap-4 items-center mt-2">
             <Button
               variant="outline"
               onClick={navigateToPrevious}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 hover:bg-primary/5 transition-colors"
             >
-              ← Précédent
+              <ArrowLeft className="w-4 h-4" />
+              Précédent
             </Button>
 
-            <div className="text-sm font-medium">
-              {selector === "types" && <span>Type: {search.type}</span>}
+            <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-white/50 px-4 py-2 rounded-lg border">
+              <Hash className="w-4 h-4" />
+              {selector === "types" && (
+                <span>
+                  Type:{" "}
+                  <span className="capitalize font-semibold">
+                    {search.type}
+                  </span>
+                </span>
+              )}
               {selector === "generations" && (
                 <span>
-                  Génération:{" "}
-                  {GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}
+                  <span className="font-semibold">
+                    {GENERATIONS[getCurrentGenerationIndex()]?.name ||
+                      "Inconnue"}
+                  </span>
                 </span>
               )}
               {selector === "both" && (
                 <span>
-                  Type: {search.type} | Génération:{" "}
-                  {GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}
+                  Type:{" "}
+                  <span className="capitalize font-semibold">
+                    {search.type}
+                  </span>{" "}
+                  | Génération:{" "}
+                  <span className="font-semibold">
+                    {GENERATIONS[getCurrentGenerationIndex()]?.name ||
+                      "Inconnue"}
+                  </span>
                 </span>
               )}
             </div>
@@ -238,20 +267,21 @@ export default function Step2Fetcher() {
             <Button
               variant="outline"
               onClick={navigateToNext}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 hover:bg-primary/5 transition-colors"
             >
-              Suivant →
+              Suivant
+              <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </CardHeader>
         {selector === "types" && (
           <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-12 py-8 w-9/10 m-auto">
               {pokemonsData?.pokemon?.map(
                 (pokemonType: PokeAPI.TypePokemon) => (
                   <div
                     key={`${pokemonType.pokemon.name}`}
-                    className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors items-center ${
+                    className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border shadow-xs outline-none hover:border-primary/50 transition-colors items-center ${
                       search.pokemons.includes(
                         `${extractPokemonIdFromUrl(pokemonType.pokemon.url)}-${
                           search.type
@@ -294,8 +324,8 @@ export default function Step2Fetcher() {
                                 )}.webp`
                           }
                           layout="constrained"
-                          width={175}
-                          height={175}
+                          width={150}
+                          height={150}
                           alt={pokemonType.pokemon.name}
                         />
                       </div>
@@ -308,7 +338,7 @@ export default function Step2Fetcher() {
         )}
         {selector === "generations" && (
           <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-6 py-2">
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-12 py-8 w-9/10 m-auto">
               {pokemonsData?.map((pokemon: PokeAPI.NamedAPIResource) => (
                 <div
                   key={`${pokemon.name}`}
@@ -319,7 +349,7 @@ export default function Step2Fetcher() {
                       ? "checked"
                       : "unchecked"
                   }
-                  className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 items-center"
+                  className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 items-center"
                 >
                   <Link
                     to="/"
@@ -340,7 +370,7 @@ export default function Step2Fetcher() {
                       ],
                     }}
                   >
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center m-4">
                       <Image
                         src={
                           shiny === "shiny"
@@ -352,8 +382,8 @@ export default function Step2Fetcher() {
                               )}.webp`
                         }
                         layout="constrained"
-                        width={175}
-                        height={175}
+                        width={150}
+                        height={150}
                         alt={pokemon.name}
                       />
                     </div>

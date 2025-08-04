@@ -3,7 +3,9 @@ import { z } from "zod";
 
 import Step1Builder from "@/components/steps/step1-builder";
 import Step2Fetcher from "@/components/steps/step2-fetcher";
-import Step3Screen from "@/components/steps/step3-screen";
+import Step3Optionals from "@/components/steps/step3-optionals";
+import Step4Screen from "@/components/steps/step4-screen";
+
 const stepsSearchSchema = z.object({
   step: z.number().default(1),
   selector: z.string().default(""),
@@ -28,7 +30,9 @@ function App() {
 
       {search.step === 2 && <Step2Fetcher />}
 
-      {search.step === 3 && <Step3Screen />}
+      {search.step === 3 && <Step3Optionals />}
+
+      {search.step === 4 && <Step4Screen />}
     </>
   );
 }
