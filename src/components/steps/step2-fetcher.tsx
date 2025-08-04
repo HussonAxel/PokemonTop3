@@ -177,10 +177,19 @@ export default function Step2Fetcher() {
 
   if (!pokemonsData) {
     return (
-      <Card className="w-full mx-auto">
-        <CardHeader>
-          <CardTitle>Step 2 - {selector}</CardTitle>
-          <CardDescription>Chargement des Pokémon...</CardDescription>
+      <Card className="max-w-full mx-auto">
+        <CardHeader className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Badge variant="secondary" className="text-sm font-medium">
+              Étape {search.step}
+            </Badge>
+          </div>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+            Sélection des Pokémon
+          </CardTitle>
+          <p className="text-muted-foreground text-sm">
+            Chargement des Pokémon...
+          </p>
         </CardHeader>
         <CardContent>
           <div className="flex justify-center items-center py-8">
@@ -193,15 +202,22 @@ export default function Step2Fetcher() {
 
   if (pokemonsData.error) {
     return (
-      <Card className="w-full mx-auto">
-        <CardHeader>
-          <CardTitle>Step 2 - {selector}</CardTitle>
-          <CardDescription>
+      <Card className="max-w-full mx-auto">
+        <CardHeader className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Badge variant="secondary" className="text-sm font-medium">
+              Étape {search.step}
+            </Badge>
+          </div>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+            Sélection des Pokémon
+          </CardTitle>
+          <p className="text-muted-foreground text-sm">
             Erreur lors du chargement des données
-          </CardDescription>
+          </p>
         </CardHeader>
         <CardContent>
-          <div className="text-red-500">
+          <div className="text-red-500 text-center">
             Erreur: {pokemonsData.error.message}
           </div>
         </CardContent>
@@ -211,17 +227,21 @@ export default function Step2Fetcher() {
 
   return (
     <>
-      <Card className="w-full mx-auto">
-        <CardHeader className="flex flex-col gap-4 justify-center items-center">
-          <div className="flex items-center gap-3">
-            <div className="text-center">
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Étape {search.step} - Sélection des Pokémon
-              </CardTitle>
-            </div>
+      <Card className="max-w-full mx-auto">
+        <CardHeader className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Badge variant="secondary" className="text-sm font-medium">
+              Étape {search.step}
+            </Badge>
           </div>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+            Sélection des Pokémon
+          </CardTitle>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">
+            Choisissez vos Pokémon préférés pour votre équipe
+          </p>
 
-          <div className="flex gap-4 items-center mt-2">
+          <div className="flex gap-4 items-center justify-center mt-4">
             <Button
               variant="outline"
               onClick={navigateToPrevious}
@@ -231,19 +251,19 @@ export default function Step2Fetcher() {
               Précédent
             </Button>
 
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-white/50 px-4 py-2 rounded-lg border">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground bg-muted/50 px-4 py-2 rounded-lg border">
               <Hash className="w-4 h-4" />
               {selector === "types" && (
                 <span>
                   Type:{" "}
-                  <span className="capitalize font-semibold">
+                  <span className="capitalize font-semibold text-foreground">
                     {search.type}
                   </span>
                 </span>
               )}
               {selector === "generations" && (
                 <span>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-foreground">
                     {GENERATIONS[getCurrentGenerationIndex()]?.name ||
                       "Inconnue"}
                   </span>
@@ -252,11 +272,11 @@ export default function Step2Fetcher() {
               {selector === "both" && (
                 <span>
                   Type:{" "}
-                  <span className="capitalize font-semibold">
+                  <span className="capitalize font-semibold text-foreground">
                     {search.type}
                   </span>{" "}
                   | Génération:{" "}
-                  <span className="font-semibold">
+                  <span className="font-semibold text-foreground">
                     {GENERATIONS[getCurrentGenerationIndex()]?.name ||
                       "Inconnue"}
                   </span>
@@ -274,22 +294,138 @@ export default function Step2Fetcher() {
             </Button>
           </div>
         </CardHeader>
+
         {selector === "types" && (
-          <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-12 py-8 w-9/10 m-auto">
-              {pokemonsData?.pokemon?.map(
-                (pokemonType: PokeAPI.TypePokemon) => (
+          <CardContent className="space-y-6">
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">
+                Pokémon de type {search.type}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez vos Pokémon préférés de ce type
+              </p>
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="relative">
+              <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 p-6 bg-gradient-to-br from-background to-muted/20 rounded-lg border border-border/50">
+                {pokemonsData?.pokemon?.map(
+                  (pokemonType: PokeAPI.TypePokemon) => (
+                    <div
+                      key={`${pokemonType.pokemon.name}`}
+                      data-state={
+                        search.pokemons.includes(
+                          `${extractPokemonIdFromUrl(pokemonType.pokemon.url)}-${
+                            search.type
+                          }`
+                        )
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:scale-105 data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
+                    >
+                      <Link
+                        to="/"
+                        search={{
+                          ...search,
+                          pokemons: [
+                            ...[
+                              ...search.pokemons.filter(
+                                (p: string) => !p.endsWith(`-${search.type}`)
+                              ),
+                              `${extractPokemonIdFromUrl(
+                                pokemonType.pokemon.url
+                              )}-${search.type}`,
+                            ],
+                          ],
+                        }}
+                        className="w-full"
+                      >
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <Image
+                            src={
+                              shiny === "shiny"
+                                ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
+                                    pokemonType.pokemon.url
+                                  )}.webp`
+                                : `/assets/sprites/base/${extractPokemonIdFromUrl(
+                                    pokemonType.pokemon.url
+                                  )}.webp`
+                            }
+                            layout="constrained"
+                            width={120}
+                            height={120}
+                            alt={pokemonType.pokemon.name}
+                            className="relative z-10 transition-transform duration-200 group-hover:scale-110"
+                          />
+                        </div>
+
+                        <div className="text-center space-y-1 mt-2">
+                          <p className="font-medium text-sm capitalize text-foreground">
+                            {pokemonType.pokemon.name}
+                          </p>
+                          <Badge variant="outline" className="text-xs">
+                            #{extractPokemonIdFromUrl(pokemonType.pokemon.url)}
+                          </Badge>
+                        </div>
+
+                        <RadioGroupItem
+                          value={pokemonType.pokemon.name}
+                          id={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
+                          className="absolute inset-0 opacity-0 cursor-pointer"
+                        />
+
+                        {/* Indicateur de sélection */}
+                        <div
+                          className="absolute top-2 right-2 w-4 h-4 rounded-full border-2 border-border transition-colors data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                          data-state={
+                            search.pokemons.includes(
+                              `${extractPokemonIdFromUrl(pokemonType.pokemon.url)}-${
+                                search.type
+                              }`
+                            )
+                              ? "checked"
+                              : "unchecked"
+                          }
+                        />
+                      </Link>
+                    </div>
+                  )
+                )}
+              </RadioGroup>
+            </div>
+          </CardContent>
+        )}
+
+        {selector === "generations" && (
+          <CardContent className="space-y-6">
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">
+                Pokémon de la génération{" "}
+                {GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez vos Pokémon préférés de cette génération
+              </p>
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="relative">
+              <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 p-6 bg-gradient-to-br from-background to-muted/20 rounded-lg border border-border/50">
+                {pokemonsData?.map((pokemon: PokeAPI.NamedAPIResource) => (
                   <div
-                    key={`${pokemonType.pokemon.name}`}
-                    className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border shadow-xs outline-none hover:border-primary/50 transition-colors items-center ${
+                    key={`${pokemon.name}`}
+                    data-state={
                       search.pokemons.includes(
-                        `${extractPokemonIdFromUrl(pokemonType.pokemon.url)}-${
-                          search.type
-                        }`
+                        `${extractPokemonIdFromUrl(pokemon.url)}-${GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}`
                       )
-                        ? "border-primary bg-primary/5"
-                        : ""
-                    }`}
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:scale-105 data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
                   >
                     <Link
                       to="/"
@@ -298,107 +434,73 @@ export default function Step2Fetcher() {
                         pokemons: [
                           ...[
                             ...search.pokemons.filter(
-                              (p: string) => !p.endsWith(`-${search.type}`)
+                              (p: string) =>
+                                !p.endsWith(
+                                  `-${GENERATIONS[getCurrentGenerationIndex()]?.name}`
+                                )
                             ),
                             `${extractPokemonIdFromUrl(
-                              pokemonType.pokemon.url
-                            )}-${search.type}`,
+                              pokemon.url
+                            )}-${GENERATIONS[getCurrentGenerationIndex()]?.name}`,
                           ],
                         ],
                       }}
+                      className="w-full"
                     >
-                      <div className="flex items-center align-center content-center self-center">
-                        <RadioGroupItem
-                          value={pokemonType.pokemon.name}
-                          id={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
-                          className="order-1 after:absolute after:inset-0 hidden"
-                        />
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <Image
                           src={
                             shiny === "shiny"
                               ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                                  pokemonType.pokemon.url
+                                  pokemon.url
                                 )}.webp`
                               : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                                  pokemonType.pokemon.url
+                                  pokemon.url
                                 )}.webp`
                           }
                           layout="constrained"
-                          width={150}
-                          height={150}
-                          alt={pokemonType.pokemon.name}
+                          width={120}
+                          height={120}
+                          alt={pokemon.name}
+                          className="relative z-10 transition-transform duration-200 group-hover:scale-110"
                         />
                       </div>
+
+                      <div className="text-center space-y-1 mt-2">
+                        <p className="font-medium text-sm capitalize text-foreground">
+                          {pokemon.name}
+                        </p>
+                        <Badge variant="outline" className="text-xs">
+                          #{extractPokemonIdFromUrl(pokemon.url)}
+                        </Badge>
+                      </div>
+
+                      <RadioGroupItem
+                        value={pokemon.name}
+                        id={`${pokemon.name}-${pokemon.url}`}
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        checked={search.pokemons.includes(
+                          `${extractPokemonIdFromUrl(pokemon.url)}-${GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}`
+                        )}
+                      />
+
+                      {/* Indicateur de sélection */}
+                      <div
+                        className="absolute top-2 right-2 w-4 h-4 rounded-full border-2 border-border transition-colors data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                        data-state={
+                          search.pokemons.includes(
+                            `${extractPokemonIdFromUrl(pokemon.url)}-${GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}`
+                          )
+                            ? "checked"
+                            : "unchecked"
+                        }
+                      />
                     </Link>
                   </div>
-                )
-              )}
-            </RadioGroup>
-          </CardContent>
-        )}
-        {selector === "generations" && (
-          <CardContent className="border-[0.5px] border-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 3xl:grid-cols-12 gap-x-4 gap-y-8 overflow-y-auto my-12 py-8 w-9/10 m-auto">
-              {pokemonsData?.map((pokemon: PokeAPI.NamedAPIResource) => (
-                <div
-                  key={`${pokemon.name}`}
-                  data-state={
-                    search.pokemons.includes(
-                      `${extractPokemonIdFromUrl(pokemon.url)}-${GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}`
-                    )
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 items-center"
-                >
-                  <Link
-                    to="/"
-                    search={{
-                      ...search,
-                      pokemons: [
-                        ...[
-                          ...search.pokemons.filter(
-                            (p: string) =>
-                              !p.endsWith(
-                                `-${GENERATIONS[getCurrentGenerationIndex()]?.name}`
-                              )
-                          ),
-                          `${extractPokemonIdFromUrl(
-                            pokemon.url
-                          )}-${GENERATIONS[getCurrentGenerationIndex()]?.name}`,
-                        ],
-                      ],
-                    }}
-                  >
-                    <div className="flex justify-center items-center m-4">
-                      <Image
-                        src={
-                          shiny === "shiny"
-                            ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                                pokemon.url
-                              )}.webp`
-                            : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                                pokemon.url
-                              )}.webp`
-                        }
-                        layout="constrained"
-                        width={150}
-                        height={150}
-                        alt={pokemon.name}
-                      />
-                    </div>
-                    <RadioGroupItem
-                      value={pokemon.name}
-                      id={`${pokemon.name}-${pokemon.url}`}
-                      className="order-1 after:absolute after:inset-0 left-1 hidden"
-                      checked={search.pokemons.includes(
-                        `${extractPokemonIdFromUrl(pokemon.url)}-${GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}`
-                      )}
-                    />
-                  </Link>
-                </div>
-              ))}
-            </RadioGroup>
+                ))}
+              </RadioGroup>
+            </div>
           </CardContent>
         )}
       </Card>
