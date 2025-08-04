@@ -41,7 +41,7 @@ export default function Step1Builder({ search }: { search: any }) {
   const prefetchPokemons = prefetchPokemonPerType();
   const prefetchPokemonsGeneration = prefetchPokemonsPerGeneration();
   return (
-    <Card className="max-w-1/3 m-auto">
+    <Card className="max-w-full lg:max-w-1/2 m-auto">
       <CardHeader className="flex flex-col gap-8">
         <CardTitle>Favorites Pokémon Picker</CardTitle>
         <CardDescription className="text-md">

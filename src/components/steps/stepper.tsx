@@ -30,7 +30,7 @@ export default function StepperComponent() {
     <div className="mx-auto w-3/4 space-y-8 text-center">
       <div className="space-y-3">
         <Stepper value={currentStep} onValueChange={setCurrentStep}>
-          {numberOfSteps.map((step) => (
+          {numberOfSteps.map((step: number) => (
             <StepperItem key={step} step={step} className="flex-1">
               <StepperTrigger
                 className="w-full flex-col items-start gap-2"

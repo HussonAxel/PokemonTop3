@@ -16,10 +16,13 @@ import {
   extractPokemonIdFromUrl,
 } from "@/utils/functions";
 
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 import { Image } from "@unpic/react";
+import { Link } from "@tanstack/react-router";
+
+import type { PokeAPI } from "pokeapi-types";
 
 export default function Step2Fetcher() {
   const search = useSearch({ from: "/" });
@@ -28,12 +31,10 @@ export default function Step2Fetcher() {
 
   const pokemonsData =
     selector === "types"
-      ? useGetPokemonsPerType(search.type || "")
-      : useGetPokemonsPerGeneration(search.generation?.[1] || "");
+      ? useGetPokemonsPerType(search.type || "").data
+      : useGetPokemonsPerGeneration(search.generation?.[1] || "").data;
 
-  console.log(pokemonsData?.data?.results);
-
-  if (pokemonsData.isLoading) {
+  if (!pokemonsData) {
     return (
       <Card className="w-full mx-auto">
         <CardHeader>
@@ -80,82 +81,118 @@ export default function Step2Fetcher() {
         </CardHeader>
         {selector === "types" && (
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
-              {pokemonsData?.data?.pokemon?.map((pokemon) => (
-                <div
-                  key={`${pokemon.pokemon.name}`}
-                  className="border-input has-data-[state=checked]:border-primary/50 relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none"
-                >
-                  <div className="flex justify-between gap-2">
-                    <Checkbox
-                      id={`${pokemon.pokemon.name}-${pokemon.pokemon.url}`}
-                      value={pokemon.pokemon.name}
-                      className="order-1 after:absolute after:inset-0"
-                      defaultChecked={false}
-                    />
-                    <Image
-                      src={
-                        shiny === "shiny"
-                          ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                              pokemon.pokemon.url
-                            )}.webp`
-                          : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                              pokemon.pokemon.url
-                            )}.webp`
-                      }
-                      layout="constrained"
-                      width={150}
-                      height={150}
-                      alt="A lovely bath"
-                    />
-                  </div>
-                  <Label
-                    htmlFor={`${pokemon.pokemon.name}-${pokemon.pokemon.url}`}
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
+              {pokemonsData?.pokemon?.map(
+                (pokemonType: PokeAPI.TypePokemon) => (
+                  <Link
+                    to="/"
+                    search={{
+                      ...search,
+                      pokemons: [
+                        extractPokemonIdFromUrl(pokemonType.pokemon.url) || 0,
+                      ],
+                    }}
                   >
-                    {beautifyPokemonName(pokemon.pokemon.name)}
-                  </Label>
-                </div>
-              ))}
-            </div>
+                    <div
+                      key={`${pokemonType.pokemon.name}`}
+                      className={`border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors ${
+                        search.pokemons.includes(
+                          extractPokemonIdFromUrl(pokemonType.pokemon.url) || 0
+                        )
+                          ? "border-primary bg-primary/5"
+                          : ""
+                      }`}
+                    >
+                      <div className="flex justify-between gap-2">
+                        <RadioGroupItem
+                          value={pokemonType.pokemon.name}
+                          id={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
+                          className="order-1 after:absolute after:inset-0"
+                        />
+                        <Image
+                          src={
+                            shiny === "shiny"
+                              ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
+                                  pokemonType.pokemon.url
+                                )}.webp`
+                              : `/assets/sprites/base/${extractPokemonIdFromUrl(
+                                  pokemonType.pokemon.url
+                                )}.webp`
+                          }
+                          layout="constrained"
+                          width={150}
+                          height={150}
+                          alt={pokemonType.pokemon.name}
+                        />
+                      </div>
+                      <Label
+                        htmlFor={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
+                      >
+                        {beautifyPokemonName(pokemonType.pokemon.name)}
+                      </Label>
+                    </div>
+                  </Link>
+                )
+              )}
+            </RadioGroup>
           </CardContent>
         )}
         {selector === "generations" && (
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
-              {pokemonsData?.data?.results?.map((pokemon) => (
-                <div
-                  key={`${pokemon.name}`}
-                  className="border-input has-data-[state=checked]:border-primary/50 relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none"
-                >
-                  <div className="flex justify-between gap-2">
-                    <Checkbox
-                      id={`${pokemon.name}-${pokemon.url}`}
-                      value={pokemon.name}
-                      className="order-1 after:absolute after:inset-0"
-                      defaultChecked={false}
-                    />
-                    <Image
-                      src={
-                        shiny === "shiny"
-                          ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                              pokemon.url
-                            )}.webp`
-                          : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                              pokemon.url
-                            )}.webp`
+            <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8 gap-x-2 gap-y-8 overflow-y-auto my-6 py-2">
+              {pokemonsData?.results?.map(
+                (pokemon: PokeAPI.NamedAPIResource) => (
+                  <Link
+                    to="/"
+                    search={{
+                      ...search,
+                      pokemons: [extractPokemonIdFromUrl(pokemon.url) || 0],
+                    }}
+                  >
+                    <div
+                      key={`${pokemon.name}`}
+                      data-state={
+                        search.pokemons.includes(
+                          extractPokemonIdFromUrl(pokemon.url) || 0
+                        )
+                          ? "checked"
+                          : "unchecked"
                       }
-                      layout="constrained"
-                      width={150}
-                      height={150}
-                      alt="A lovely bath"
-                    />
-                  </div>
-                  <Label htmlFor={`${pokemon.name}-${pokemon.url}`}>
-                    {beautifyPokemonName(pokemon.name)}
-                  </Label>
-                </div>
-              ))}
-            </div>
+                      className="border-input relative flex cursor-pointer flex-col gap-4 rounded-md border p-4 shadow-xs outline-none hover:border-primary/50 transition-colors data-[state=checked]:border-primary data-[state=checked]:bg-primary/5"
+                    >
+                      <div className="flex justify-between gap-2">
+                        <RadioGroupItem
+                          value={pokemon.name}
+                          id={`${pokemon.name}-${pokemon.url}`}
+                          className="order-1 after:absolute after:inset-0"
+                          checked={search.pokemons.includes(
+                            extractPokemonIdFromUrl(pokemon.url) || 0
+                          )}
+                        />
+                        <Image
+                          src={
+                            shiny === "shiny"
+                              ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
+                                  pokemon.url
+                                )}.webp`
+                              : `/assets/sprites/base/${extractPokemonIdFromUrl(
+                                  pokemon.url
+                                )}.webp`
+                          }
+                          layout="constrained"
+                          width={150}
+                          height={150}
+                          alt={pokemon.name}
+                        />
+                      </div>
+                      <Label htmlFor={`${pokemon.name}-${pokemon.url}`}>
+                        {beautifyPokemonName(pokemon.name)}
+                      </Label>
+                    </div>
+                  </Link>
+                )
+              )}
+            </RadioGroup>
           </CardContent>
         )}
         <StepperComponent />

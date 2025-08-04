@@ -138,6 +138,9 @@ importers:
       jsdom:
         specifier: ^26.0.0
         version: 26.1.0
+      pokeapi-types:
+        specifier: 0.0.2
+        version: 0.0.2
       typescript:
         specifier: ^5.7.2
         version: 5.9.2
@@ -3726,6 +3729,9 @@ packages:
 
   pkg-types@2.2.0:
     resolution: {integrity: sha512-2SM/GZGAEkPp3KWORxQZns4M+WSeXbC2HEvmOIJe3Cmiv6ieAJvdVhDldtHqM5J1Y7MrR1XhkBT/rMlhh9FdqQ==}
+
+  pokeapi-types@0.0.2:
+    resolution: {integrity: sha512-yg/ZMEILjBiF6Af1lGXfSXYi5WEUUlFi6tDKxKmW6lOvdYsp1H3oNL++rKq/32Zsp6MgOig4Xltz9txYnryFpw==}
 
   postcss-values-parser@6.0.2:
     resolution: {integrity: sha512-YLJpK0N1brcNJrs9WatuJFtHaV9q5aAOj+S4DI5S7jgHlRfm0PIbDCAFRYMQD5SHq7Fy6xsDhyutgS0QOAs0qw==}
@@ -8503,6 +8509,8 @@ snapshots:
       confbox: 0.2.2
       exsolve: 1.0.7
       pathe: 2.0.3
+
+  pokeapi-types@0.0.2: {}
 
   postcss-values-parser@6.0.2(postcss@8.5.6):
     dependencies:
