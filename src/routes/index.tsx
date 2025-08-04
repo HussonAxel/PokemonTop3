@@ -1,27 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetTypes } from "@/services/pokemons";
-import DialogPokemonType, {
-  TypeNameSearchSchema,
-} from "@/components/ui/dialog-pokemon-type";
+import { z } from "zod";
+
+import Step1Builder from "@/components/steps/step1-builder";
+import Step2Fetcher from "@/components/steps/step2-fetcher";
+const stepsSearchSchema = z.object({
+  step: z.number().default(1),
+  selector: z.string().default(""),
+  version: z.string().default(""),
+  pokemonsOptions: z.array(z.string()).default([]),
+  selectRoster: z.string().default(""),
+  type: z.string().optional(),
+  generation: z.string().optional(),
+});
 
 export const Route = createFileRoute("/")({
-  validateSearch: TypeNameSearchSchema,
+  validateSearch: stepsSearchSchema,
   component: App,
 });
 
 function App() {
-  const { data: typesData, isLoading } = useGetTypes();
-  const typesList = typesData?.results.filter(
-    (type: any) => type.name !== "unknown" && type.name !== "stellar"
-  );
-
-  if (isLoading) return <p>Loading...</p>;
+  const search = Route.useSearch();
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {typesData &&
-        typesList.map((type: any) => (
-          <DialogPokemonType type={type.name} key={type.name} />
-        ))}
-    </div>
+    <>
+      {search.step === 1 && <Step1Builder search={search} />}
+
+      {search.step === 2 && <Step2Fetcher />}
+    </>
   );
 }

@@ -17,6 +17,8 @@ export const QUERY_KEYS = {
   pokemonsPerTypes: (typeName: string) =>
     ["pokemonsPerTypes", typeName] as const,
   types: () => ["types"] as const,
+  pokemonsPerGenerations: (generationNumbers: string) =>
+    ["pokemonsPerGenerations", generationNumbers] as const,
 };
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -34,6 +36,15 @@ export const fetchPokemonsPerType = async (typeName: string) => {
   if (!res.ok) throw new Error("Failed to fetch pokemons per type");
   return res.json();
 };
+
+export const fetchPokemonsPerGeneration = async (generationNumbers: string) => {
+  const res = await fetch(
+    `${BASE_POKEAPI_URL}/pokemon?limit=${generationNumbers}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch pokemons per generation");
+  return res.json();
+};
+
 //──────────────────────────────────────────────────────────────────────────────
 // PREFETCH FUNCTIONS
 //──────────────────────────────────────────────────────────────────────────────
@@ -60,6 +71,17 @@ export const prefetchPokemonPerType = () => {
   };
 };
 
+export const prefetchPokemonsPerGeneration = () => {
+  const qc = useQueryClient();
+  return (generationNumbers: string) => {
+    qc.ensureQueryData({
+      queryKey: QUERY_KEYS.pokemonsPerGenerations(generationNumbers),
+      queryFn: () => fetchPokemonsPerGeneration(generationNumbers),
+      ...DEFAULT_CACHE_OPTIONS,
+    });
+  };
+};
+
 //──────────────────────────────────────────────────────────────────────────────
 // GET DATA HOOKS
 //──────────────────────────────────────────────────────────────────────────────
@@ -80,6 +102,17 @@ export const useGetPokemonsPerType = (typeName: string) => {
     queryFn: () => fetchPokemonsPerType(typeName),
     ...DEFAULT_CACHE_OPTIONS,
     enabled: !!typeName,
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
+  });
+};
+
+export const useGetPokemonsPerGeneration = (generationNumbers: string) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.pokemonsPerGenerations(generationNumbers),
+    queryFn: () => fetchPokemonsPerGeneration(generationNumbers),
+    ...DEFAULT_CACHE_OPTIONS,
+    enabled: !!generationNumbers,
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
