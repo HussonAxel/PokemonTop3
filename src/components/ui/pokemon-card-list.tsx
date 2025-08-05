@@ -5,7 +5,27 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
-import { GENERATIONS, starters, regionalBird, regionalMammal, bug, fossil, babyPokemon, pikachuClone, eeveeForm, regionalForm, newEvolutionForms, megaEvolutions, gigantamaxPokemon, pseudoLegend, ultraBeast, paradox, boxLegendary, legendaryPokemon, mythical } from "@/utils/consts";
+import {
+  GENERATIONS,
+  starters,
+  regionalBird,
+  regionalMammal,
+  bug,
+  fossil,
+  babyPokemon,
+  pikachuClone,
+  eeveeForm,
+  regionalForm,
+  newEvolutionForms,
+  megaEvolutions,
+  gigantamaxPokemon,
+  pseudoLegend,
+  ultraBeast,
+  paradox,
+  boxLegendary,
+  legendaryPokemon,
+  mythical,
+} from "@/utils/consts";
 import type { PokeAPI } from "pokeapi-types";
 
 interface PokemonCardListProps {
@@ -98,16 +118,17 @@ export function PokemonCardList({
     return pokemon.name;
   };
 
-
   const getSearchParams = (pokemon: any) => {
     const pokemonId = getPokemonId(pokemon);
-    
+
     if (selector === "types" && currentType) {
       return {
         ...search,
         pokemons: [
           ...[
-            ...search.pokemons.filter((p: string) => !p.endsWith(`-${currentType}`)),
+            ...search.pokemons.filter(
+              (p: string) => !p.endsWith(`-${currentType}`)
+            ),
             `${pokemonId}-${currentType}`,
           ],
         ],
@@ -118,7 +139,9 @@ export function PokemonCardList({
         ...search,
         pokemons: [
           ...[
-            ...search.pokemons.filter((p: string) => !p.endsWith(`-${generationName}`)),
+            ...search.pokemons.filter(
+              (p: string) => !p.endsWith(`-${generationName}`)
+            ),
             `${pokemonId}-${generationName}`,
           ],
         ],
@@ -127,16 +150,17 @@ export function PokemonCardList({
       const category = currentCategory;
       const newPokemonEntry = `${pokemonId.toString()}-${category}`;
 
-      const filteredOptionalPokemons = search.OptionalPokemons?.filter(
-        (p: string) => !p.endsWith(`-${category}`)
-      ) || [];
-      
+      const filteredOptionalPokemons =
+        search.OptionalPokemons?.filter(
+          (p: string) => !p.endsWith(`-${category}`)
+        ) || [];
+
       return {
         ...search,
-        OptionalPokemons: [newPokemonEntry, ...filteredOptionalPokemons]
+        OptionalPokemons: [newPokemonEntry, ...filteredOptionalPokemons],
       };
     }
-    
+
     return search;
   };
 
@@ -145,7 +169,7 @@ export function PokemonCardList({
       <Separator className="my-4" />
 
       <div className="relative">
-        <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 gap-4 p-6 rounded-lg border border-border/50">
+        <RadioGroup className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12 gap-4 p-6 rounded-lg border border-border/50">
           {data?.map((pokemon: any) => (
             <div
               key={`${getPokemonName(pokemon)}`}
@@ -166,8 +190,8 @@ export function PokemonCardList({
                         : `/assets/sprites/base/${getPokemonId(pokemon)}.webp`
                     }
                     layout="constrained"
-                    width={120}
-                    height={120}
+                    width={70}
+                    height={70}
                     alt={getPokemonName(pokemon)}
                     className="relative z-10 transition-transform group-hover:scale-110"
                   />
@@ -202,4 +226,4 @@ export function PokemonCardList({
       </div>
     </div>
   );
-} 
+}
