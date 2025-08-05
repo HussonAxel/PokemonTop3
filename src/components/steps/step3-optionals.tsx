@@ -40,21 +40,10 @@ export default function Step3Optionals() {
         <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
           Sélection des Pokémons optionnels
         </CardTitle>
-        <p className="text-muted-foreground text-sm max-w-md mx-auto">
-          Choisissez les Pokémons que vous souhaitez inclure dans votre équipe
-        </p>
       </CardHeader>
 
       {pokemonOptions.includes("starters") && (
         <CardContent className="space-y-6">
-          <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold text-foreground">
-              Pokémon de départ
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Sélectionnez vos Pokémon de départ préférés
-            </p>
-          </div>
 
           <Separator className="my-4" />
 
