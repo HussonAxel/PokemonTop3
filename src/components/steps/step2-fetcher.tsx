@@ -2,7 +2,6 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -11,34 +10,23 @@ import {
   useGetPokemonsPerGeneration,
   useGetTypes,
 } from "@/services/pokemons";
-import { extractPokemonIdFromUrl } from "@/utils/functions";
+import { PokemonCardList } from "@/components/ui/pokemon-card-list";
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
-
-import { Image } from "@unpic/react";
-import { Link } from "@tanstack/react-router";
-
-import type { PokeAPI } from "pokeapi-types";
-import { GENERATIONS } from "@/utils/consts";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import {
   ArrowLeft,
   ArrowRight,
-  Zap,
-  Sparkles,
-  Layers,
-  Type,
   Hash,
 } from "lucide-react";
+
+import { GENERATIONS } from "@/utils/consts";
 
 export default function Step2Fetcher() {
   let typeIsSelected, generationIsSelected;
   const navigate = useNavigate();
   const search = useSearch({ from: "/" });
   const selector = search.selector;
-  const shiny = search.version;
   const type = search.type;
   const pokemons = search.pokemons;
   const generation = search.generation;
@@ -292,171 +280,25 @@ export default function Step2Fetcher() {
           </div>
         </CardHeader>
 
-        {selector === "types" && (
-          <CardContent className="space-y-6">
-            <Separator className="my-4" />
+        <CardContent>
+          {selector === "types" && (
+            <PokemonCardList
+              data={pokemonsData?.pokemon || []}
+              selector="types"
+              currentType={search.type}
+              showGenerationBadge={false}
+            />
+          )}
 
-            <div className="relative">
-              <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 gap-4 p-6 rounded-lg border border-border/50">
-                {pokemonsData?.pokemon?.map(
-                  (pokemonType: PokeAPI.TypePokemon) => (
-                    <div
-                      key={`${pokemonType.pokemon.name}`}
-                      data-state={
-                        search.pokemons.includes(
-                          `${extractPokemonIdFromUrl(
-                            pokemonType.pokemon.url
-                          )}-${search.type}`
-                        )
-                          ? "checked"
-                          : "unchecked"
-                      }
-                      className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
-                    >
-                      <Link
-                        to="/"
-                        search={{
-                          ...search,
-                          pokemons: [
-                            ...[
-                              ...search.pokemons.filter(
-                                (p: string) => !p.endsWith(`-${search.type}`)
-                              ),
-                              `${extractPokemonIdFromUrl(
-                                pokemonType.pokemon.url
-                              )}-${search.type}`,
-                            ],
-                          ],
-                        }}
-                        className="w-full items-center"
-                      >
-                        <div className="relative">
-                          <div className="absolute inset-0" />
-                          <Image
-                            src={
-                              shiny === "shiny"
-                                ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                                    pokemonType.pokemon.url
-                                  )}.webp`
-                                : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                                    pokemonType.pokemon.url
-                                  )}.webp`
-                            }
-                            layout="constrained"
-                            width={120}
-                            height={120}
-                            alt={pokemonType.pokemon.name}
-                            className="relative z-10"
-                          />
-                        </div>
-
-                        <div className="text-center space-y-1 mt-2">
-                          <p className="font-medium text-sm capitalize text-foreground">
-                            {pokemonType.pokemon.name}
-                          </p>
-                        </div>
-
-                        <RadioGroupItem
-                          value={pokemonType.pokemon.name}
-                          id={`${pokemonType.pokemon.name}-${pokemonType.pokemon.url}`}
-                          className="absolute inset-0 opacity-0 cursor-pointer hidden"
-                        />
-                      </Link>
-                    </div>
-                  )
-                )}
-              </RadioGroup>
-            </div>
-          </CardContent>
-        )}
-
-        {selector === "generations" && (
-          <CardContent className="space-y-6">
-
-            <Separator className="my-4" />
-
-            <div className="relative">
-              <RadioGroup className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-10 gap-4 p-6 rounded-lg border border-border/50">                {pokemonsData?.map((pokemon: PokeAPI.NamedAPIResource) => (
-                  <div
-                    key={`${pokemon.name}`}
-                    data-state={
-                      search.pokemons.includes(
-                        `${extractPokemonIdFromUrl(pokemon.url)}-${
-                          GENERATIONS[getCurrentGenerationIndex()]?.name ||
-                          "Inconnue"
-                        }`
-                      )
-                        ? "checked"
-                        : "unchecked"
-                    }
-                    className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:scale-105 active:scale-[98%] data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
-                  >
-                    <Link
-                      to="/"
-                      search={{
-                        ...search,
-                        pokemons: [
-                          ...[
-                            ...search.pokemons.filter(
-                              (p: string) =>
-                                !p.endsWith(
-                                  `-${
-                                    GENERATIONS[getCurrentGenerationIndex()]
-                                      ?.name
-                                  }`
-                                )
-                            ),
-                            `${extractPokemonIdFromUrl(pokemon.url)}-${
-                              GENERATIONS[getCurrentGenerationIndex()]?.name
-                            }`,
-                          ],
-                        ],
-                      }}
-                      className="w-full items-center"
-                    >
-                      <div className="relative">
-                        <Image
-                          src={
-                            shiny === "shiny"
-                              ? `/assets/sprites/shiny/${extractPokemonIdFromUrl(
-                                  pokemon.url
-                                )}.webp`
-                              : `/assets/sprites/base/${extractPokemonIdFromUrl(
-                                  pokemon.url
-                                )}.webp`
-                          }
-                          layout="constrained"
-                          width={120}
-                          height={120}
-                          alt={pokemon.name}
-                          className="relative z-10 transition-transform duration-200 group-hover:scale-110"
-                        />
-                      </div>
-
-                      <div className="text-center space-y-1 mt-2">
-                        <p className="font-medium text-sm capitalize text-foreground">
-                          {pokemon.name}
-                        </p>
-                      </div>
-
-                      <RadioGroupItem
-                        value={pokemon.name}
-                        id={`${pokemon.name}-${pokemon.url}`}
-                        className="absolute inset-0 opacity-0 cursor-pointer hidden"
-                        checked={search.pokemons.includes(
-                          `${extractPokemonIdFromUrl(pokemon.url)}-${
-                            GENERATIONS[getCurrentGenerationIndex()]?.name ||
-                            "Inconnue"
-                          }`
-                        )}
-                      />
-                    </Link>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-          </CardContent>
-        )}
+          {selector === "generations" && (
+            <PokemonCardList
+              data={pokemonsData || []}
+              selector="generations"
+              currentGenerationIndex={getCurrentGenerationIndex()}
+              showGenerationBadge={false}
+            />
+          )}
+        </CardContent>
       </Card>
     </>
   );

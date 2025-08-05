@@ -12,23 +12,23 @@ export const pokemonStatusVersion = [
 
 export const pokemonsOptions = [
   { value: "starters", label: "Starters" },
-  { value: "legendaries", label: "Legendaries" },
-  { value: "mythicals", label: "Mythicals" },
-  { value: "ultraBeasts", label: "Ultra Beasts" },
-  { value: "megaEvolutions", label: "Mega Evolutions" },
   { value: "regionalBird", label: "Regional Bird" },
   { value: "regionalMammal", label: "Regional Mammal" },
-  { value: "bug", label: "Bug" },
-  { value: "pseudoLegend", label: "Pseudo Legend" },
-  { value: "pikachuClone", label: "Pikachu Clone" },
-  { value: "eeveeForm", label: "Eevee Form" },
+  { value: "bug", label: "Regional Bug" },
   { value: "fossil", label: "Fossil" },
-  { value: "regionalForm", label: "Regional Form" },
-  { value: "baby", label: "Baby" },
-  { value: "boxLegendary", label: "Box Legendary" },
-  { value: "mythical", label: "Mythical" },
-  { value: "ultraBeast", label: "Ultra Beast" },
+  { value: "babyPokemon", label: "Babies" },
+  { value: "pikachuClone", label: "Pikachu Clone" },
+  { value: "eeveeForm", label: "Eeveelutions" },
+  { value: "regionalForm", label: "Regional Variants" },
+  { value: "newEvolutionForms", label: "New Evolution" },
+  { value: "megaEvolutions", label: "Mega Evolutions" },
+  { value: "gigantamaxPokemon", label: "Gigantamax Pokémon" },
+  { value: "pseudoLegend", label: "Pseudo Legend" },
   { value: "paradox", label: "Paradox" },
+  { value: "ultraBeasts", label: "Ultra Beasts" },
+  { value: "boxLegendary", label: "Box Legendary" },
+  { value: "legendary", label: "Legendary" },
+  { value: "mythicals", label: "Mythicals" },
 ];
 
 export const SelectRoster = [
@@ -558,4 +558,310 @@ export const starters = [
   // Special Forms
   { name: "Greninja (Ash)", id: 10117 },
   { name: "Greninja (Battle Bond)", id: 10116 },
+];
+
+export const newEvolutionForms = [
+  // Generation 2 additions for Generation 1 Pokémon
+  { name: "Crobat", id: 169 }, // Evolution of Golbat (Gen 1)
+  { name: "Bellossom", id: 182 }, // Alternate evolution of Gloom (Gen 1)
+  { name: "Politoed", id: 186 }, // Alternate evolution of Poliwhirl (Gen 1)
+  { name: "Espeon", id: 196 }, // New Eevee evolution (Gen 1)
+  { name: "Umbreon", id: 197 }, // New Eevee evolution (Gen 1)
+  { name: "Slowking", id: 199 }, // Alternate evolution of Slowpoke (Gen 1)
+  { name: "Steelix", id: 208 }, // Evolution of Onix (Gen 1)
+  { name: "Scizor", id: 212 }, // Evolution of Scyther (Gen 1)
+  { name: "Kingdra", id: 230 }, // Evolution of Seadra (Gen 1)
+  { name: "Porygon2", id: 233 }, // Evolution of Porygon (Gen 1)
+  { name: "Blissey", id: 242 }, // Evolution of Chansey (Gen 1)
+
+  // Generation 4 additions for earlier generation Pokémon
+  { name: "Roserade", id: 407 }, // Evolution of Roselia (Gen 3)
+  { name: "Ambipom", id: 424 }, // Evolution of Aipom (Gen 2)
+  { name: "Mismagius", id: 429 }, // Evolution of Misdreavus (Gen 2)
+  { name: "Honchkrow", id: 430 }, // Evolution of Murkrow (Gen 2)
+  { name: "Weavile", id: 461 }, // Evolution of Sneasel (Gen 1)
+  { name: "Magnezone", id: 462 }, // Evolution of Magneton (Gen 1)
+  { name: "Lickilicky", id: 463 }, // Evolution of Lickitung (Gen 1)
+  { name: "Rhyperior", id: 464 }, // Evolution of Rhydon (Gen 1)
+  { name: "Tangrowth", id: 465 }, // Evolution of Tangela (Gen 1)
+  { name: "Electivire", id: 466 }, // Evolution of Electabuzz (Gen 1)
+  { name: "Magmortar", id: 467 }, // Evolution of Magmar (Gen 1)
+  { name: "Togekiss", id: 468 }, // Evolution of Togetic (Gen 2)
+  { name: "Yanmega", id: 469 }, // Evolution of Yanma (Gen 2)
+  { name: "Leafeon", id: 470 }, // New Eevee evolution (Gen 1)
+  { name: "Glaceon", id: 471 }, // New Eevee evolution (Gen 1)
+  { name: "Gliscor", id: 472 }, // Evolution of Gligar (Gen 2)
+  { name: "Mamoswine", id: 473 }, // Evolution of Piloswine (Gen 2)
+  { name: "Porygon-Z", id: 474 }, // Evolution of Porygon2 (Gen 2)
+  { name: "Gallade", id: 475 }, // Evolution of Kirlia (Gen 3, male only)
+  { name: "Probopass", id: 476 }, // Evolution of Nosepass (Gen 3)
+  { name: "Dusknoir", id: 477 }, // Evolution of Dusclops (Gen 3)
+  { name: "Froslass", id: 478 }, // Evolution of Snorunt (Gen 3, female only)
+
+  // Generation 6 additions
+  { name: "Sylveon", id: 700 }, // New Eevee evolution (Gen 1)
+
+  // Generation 8 additions for regional variants
+  { name: "Obstagoon", id: 862 }, // Evolution of Galarian Linoone
+  { name: "Perrserker", id: 863 }, // Evolution of Galarian Meowth
+  { name: "Cursola", id: 864 }, // Evolution of Galarian Corsola
+  { name: "Sirfetch'd", id: 865 }, // Evolution of Galarian Farfetch'd
+  { name: "Mr. Rime", id: 866 }, // Evolution of Galarian Mr. Mime
+  { name: "Runerigus", id: 867 }, // Evolution of Galarian Yamask
+
+  // Legends Arceus additions (Generation 8 DLC)
+  { name: "Wyrdeer", id: 899 }, // Evolution of Stantler (Gen 2)
+  { name: "Kleavor", id: 900 }, // Evolution of Scyther (Gen 1)
+  { name: "Ursaluna", id: 901 }, // Evolution of Ursaring (Gen 2)
+  { name: "Basculegion", id: 902 }, // Evolution of White-Striped Basculin
+  { name: "Sneasler", id: 903 }, // Evolution of Hisuian Sneasel
+  { name: "Overqwil", id: 904 }, // Evolution of Hisuian Qwilfish
+
+  // Generation 9 additions
+  { name: "Annihilape", id: 979 }, // Evolution of Primeape (Gen 1)
+  { name: "Clodsire", id: 980 }, // Evolution of Paldean Wooper
+  { name: "Farigiraf", id: 981 }, // Evolution of Girafarig (Gen 2)
+  { name: "Dudunsparce", id: 982 }, // Evolution of Dunsparce (Gen 2)
+  { name: "Kingambit", id: 983 }, // Evolution of Bisharp (Gen 5)
+  { name: "Gholdengo", id: 1000 }, // Evolution of Gimmighoul (Gen 9)
+
+  // Generation 9 DLC additions
+  { name: "Archaludon", id: 1018 }, // Evolution of Duraludon (Gen 8)
+  { name: "Hydrapple", id: 1019 }, // Evolution of Dipplin (which evolves from Applin)
+
+  // Regional variant evolutions
+  { name: "Basculegion (Female)", id: 10248 }, // Female form
+  { name: "Ursaluna (Bloodmoon)", id: 10272 }, // Special form
+];
+
+export const babyPokemon = [
+  // Generation 2 babies
+  { name: "Pichu", id: 172 },
+  { name: "Cleffa", id: 173 },
+  { name: "Igglybuff", id: 174 },
+  { name: "Togepi", id: 175 },
+  { name: "Tyrogue", id: 236 },
+  { name: "Smoochum", id: 238 },
+  { name: "Elekid", id: 239 },
+  { name: "Magby", id: 240 },
+
+  // Generation 3 babies
+  { name: "Azurill", id: 298 },
+  { name: "Wynaut", id: 360 },
+
+  // Generation 4 babies
+  { name: "Budew", id: 406 },
+  { name: "Chingling", id: 433 },
+  { name: "Bonsly", id: 438 },
+  { name: "Mime Jr.", id: 439 },
+  { name: "Happiny", id: 440 },
+  { name: "Munchlax", id: 446 },
+  { name: "Riolu", id: 447 },
+  { name: "Mantyke", id: 458 },
+
+  // Regional variants
+  { name: "Pichu (Spiky-eared)", id: 172 }, // Same ID as regular Pichu
+];
+
+export const legendaryPokemon = [
+  // Generation 1
+  { name: "Articuno", id: 144 },
+  { name: "Zapdos", id: 145 },
+  { name: "Moltres", id: 146 },
+  { name: "Mewtwo", id: 150 },
+  { name: "Mew", id: 151 },
+
+  // Generation 2
+  { name: "Raikou", id: 243 },
+  { name: "Entei", id: 244 },
+  { name: "Suicune", id: 245 },
+  { name: "Lugia", id: 249 },
+  { name: "Ho-Oh", id: 250 },
+  { name: "Celebi", id: 251 },
+
+  // Generation 3
+  { name: "Regirock", id: 377 },
+  { name: "Regice", id: 378 },
+  { name: "Registeel", id: 379 },
+  { name: "Latias", id: 380 },
+  { name: "Latios", id: 381 },
+  { name: "Kyogre", id: 382 },
+  { name: "Groudon", id: 383 },
+  { name: "Rayquaza", id: 384 },
+  { name: "Jirachi", id: 385 },
+  { name: "Deoxys", id: 386 },
+
+  // Generation 4
+  { name: "Uxie", id: 480 },
+  { name: "Mesprit", id: 481 },
+  { name: "Azelf", id: 482 },
+  { name: "Dialga", id: 483 },
+  { name: "Palkia", id: 484 },
+  { name: "Heatran", id: 485 },
+  { name: "Regigigas", id: 486 },
+  { name: "Giratina", id: 487 },
+  { name: "Cresselia", id: 488 },
+  { name: "Phione", id: 489 },
+  { name: "Manaphy", id: 490 },
+  { name: "Darkrai", id: 491 },
+  { name: "Shaymin", id: 492 },
+  { name: "Arceus", id: 493 },
+
+  // Generation 5
+  { name: "Victini", id: 494 },
+  { name: "Cobalion", id: 638 },
+  { name: "Terrakion", id: 639 },
+  { name: "Virizion", id: 640 },
+  { name: "Tornadus", id: 641 },
+  { name: "Thundurus", id: 642 },
+  { name: "Reshiram", id: 643 },
+  { name: "Zekrom", id: 644 },
+  { name: "Landorus", id: 645 },
+  { name: "Kyurem", id: 646 },
+  { name: "Keldeo", id: 647 },
+  { name: "Meloetta", id: 648 },
+  { name: "Genesect", id: 649 },
+
+  // Generation 6
+  { name: "Xerneas", id: 716 },
+  { name: "Yveltal", id: 717 },
+  { name: "Zygarde", id: 718 },
+  { name: "Diancie", id: 719 },
+  { name: "Hoopa", id: 720 },
+  { name: "Volcanion", id: 721 },
+
+  // Generation 7
+  { name: "Tapu Koko", id: 785 },
+  { name: "Tapu Lele", id: 786 },
+  { name: "Tapu Bulu", id: 787 },
+  { name: "Tapu Fini", id: 788 },
+  { name: "Cosmog", id: 789 },
+  { name: "Cosmoem", id: 790 },
+  { name: "Solgaleo", id: 791 },
+  { name: "Lunala", id: 792 },
+  { name: "Necrozma", id: 800 },
+  { name: "Magearna", id: 801 },
+  { name: "Marshadow", id: 802 },
+  { name: "Zeraora", id: 807 },
+  { name: "Meltan", id: 808 },
+  { name: "Melmetal", id: 809 },
+
+  // Generation 8
+  { name: "Zacian", id: 888 },
+  { name: "Zamazenta", id: 889 },
+  { name: "Eternatus", id: 890 },
+  { name: "Kubfu", id: 891 },
+  { name: "Urshifu", id: 892 },
+  { name: "Zarude", id: 893 },
+  { name: "Regieleki", id: 894 },
+  { name: "Regidrago", id: 895 },
+  { name: "Glastrier", id: 896 },
+  { name: "Spectrier", id: 897 },
+  { name: "Calyrex", id: 898 },
+  { name: "Enamorus", id: 905 },
+
+  // Generation 9
+  { name: "Wo-Chien", id: 1001 },
+  { name: "Chien-Pao", id: 1002 },
+  { name: "Ting-Lu", id: 1003 },
+  { name: "Chi-Yu", id: 1004 },
+  { name: "Koraidon", id: 1007 },
+  { name: "Miraidon", id: 1008 },
+  { name: "Okidogi", id: 1014 },
+  { name: "Munkidori", id: 1015 },
+  { name: "Fezandipiti", id: 1016 },
+  { name: "Ogerpon", id: 1017 },
+  { name: "Terapagos", id: 1024 },
+  { name: "Pecharunt", id: 1025 },
+];
+
+export const megaEvolutions = [
+  { name: "Venusaur (Mega)", id: 10033 },
+  { name: "Charizard (Mega X)", id: 10034 },
+  { name: "Charizard (Mega Y)", id: 10035 },
+  { name: "Blastoise (Mega)", id: 10036 },
+  { name: "Alakazam (Mega)", id: 10037 },
+  { name: "Gengar (Mega)", id: 10038 },
+  { name: "Kangaskhan (Mega)", id: 10039 },
+  { name: "Pinsir (Mega)", id: 10040 },
+  { name: "Gyarados (Mega)", id: 10041 },
+  { name: "Aerodactyl (Mega)", id: 10042 },
+  { name: "Mewtwo (Mega X)", id: 10043 },
+  { name: "Mewtwo (Mega Y)", id: 10044 },
+  { name: "Ampharos (Mega)", id: 10045 },
+  { name: "Scizor (Mega)", id: 10046 },
+  { name: "Heracross (Mega)", id: 10047 },
+  { name: "Houndoom (Mega)", id: 10048 },
+  { name: "Tyranitar (Mega)", id: 10049 },
+  { name: "Blaziken (Mega)", id: 10050 },
+  { name: "Gardevoir (Mega)", id: 10051 },
+  { name: "Mawile (Mega)", id: 10052 },
+  { name: "Aggron (Mega)", id: 10053 },
+  { name: "Medicham (Mega)", id: 10054 },
+  { name: "Manectric (Mega)", id: 10055 },
+  { name: "Banette (Mega)", id: 10056 },
+  { name: "Absol (Mega)", id: 10057 },
+  { name: "Garchomp (Mega)", id: 10058 },
+  { name: "Lucario (Mega)", id: 10059 },
+  { name: "Abomasnow (Mega)", id: 10060 },
+  { name: "Latias (Mega)", id: 10062 },
+  { name: "Latios (Mega)", id: 10063 },
+  { name: "Swampert (Mega)", id: 10064 },
+  { name: "Sceptile (Mega)", id: 10065 },
+  { name: "Sableye (Mega)", id: 10066 },
+  { name: "Altaria (Mega)", id: 10067 },
+  { name: "Gallade (Mega)", id: 10068 },
+  { name: "Audino (Mega)", id: 10069 },
+  { name: "Sharpedo (Mega)", id: 10070 },
+  { name: "Slowbro (Mega)", id: 10071 },
+  { name: "Steelix (Mega)", id: 10072 },
+  { name: "Pidgeot (Mega)", id: 10073 },
+  { name: "Glalie (Mega)", id: 10074 },
+  { name: "Diancie (Mega)", id: 10075 },
+  { name: "Metagross (Mega)", id: 10076 },
+  { name: "Kyogre (Primal)", id: 10077 },
+  { name: "Groudon (Primal)", id: 10078 },
+  { name: "Rayquaza (Mega)", id: 10079 },
+  { name: "Camerupt (Mega)", id: 10087 },
+  { name: "Lopunny (Mega)", id: 10088 },
+  { name: "Salamence (Mega)", id: 10089 },
+  { name: "Beedrill (Mega)", id: 10090 },
+];
+
+export const gigantamaxPokemon = [
+  { name: "Venusaur (Gigantamax)", id: 10195 },
+  { name: "Charizard (Gigantamax)", id: 10196 },
+  { name: "Blastoise (Gigantamax)", id: 10197 },
+  { name: "Butterfree (Gigantamax)", id: 10198 },
+  { name: "Pikachu (Gigantamax)", id: 10199 },
+  { name: "Meowth (Gigantamax)", id: 10200 },
+  { name: "Machamp (Gigantamax)", id: 10201 },
+  { name: "Gengar (Gigantamax)", id: 10202 },
+  { name: "Kingler (Gigantamax)", id: 10203 },
+  { name: "Lapras (Gigantamax)", id: 10204 },
+  { name: "Eevee (Gigantamax)", id: 10205 },
+  { name: "Snorlax (Gigantamax)", id: 10206 },
+  { name: "Garbodor (Gigantamax)", id: 10207 },
+  { name: "Melmetal (Gigantamax)", id: 10208 },
+  { name: "Rillaboom (Gigantamax)", id: 10209 },
+  { name: "Cinderace (Gigantamax)", id: 10210 },
+  { name: "Inteleon (Gigantamax)", id: 10211 },
+  { name: "Corviknight (Gigantamax)", id: 10212 },
+  { name: "Orbeetle (Gigantamax)", id: 10213 },
+  { name: "Drednaw (Gigantamax)", id: 10214 },
+  { name: "Coalossal (Gigantamax)", id: 10215 },
+  { name: "Flapple (Gigantamax)", id: 10216 },
+  { name: "Appletun (Gigantamax)", id: 10217 },
+  { name: "Sandaconda (Gigantamax)", id: 10218 },
+  { name: "Toxtricity (Amped Gigantamax)", id: 10219 },
+  { name: "Centiskorch (Gigantamax)", id: 10220 },
+  { name: "Hatterene (Gigantamax)", id: 10221 },
+  { name: "Grimmsnarl (Gigantamax)", id: 10222 },
+  { name: "Alcremie (Gigantamax)", id: 10223 },
+  { name: "Copperajah (Gigantamax)", id: 10224 },
+  { name: "Duraludon (Gigantamax)", id: 10225 },
+  { name: "Urshifu Single Strike (Gigantamax)", id: 10226 },
+  { name: "Urshifu Rapid Strike (Gigantamax)", id: 10227 },
+  { name: "Toxtricity Low Key (Gigantamax)", id: 10228 },
+  { name: "Eternatus (Eternamax)", id: 10190 },
 ];
