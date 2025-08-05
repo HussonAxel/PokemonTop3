@@ -298,6 +298,10 @@ export default function Step2Fetcher() {
               showGenerationBadge={false}
             />
           )}
+
+          {selector === "both" && (
+            <p>Je suis un test</p>
+          )}
         </CardContent>
       </Card>
     </>

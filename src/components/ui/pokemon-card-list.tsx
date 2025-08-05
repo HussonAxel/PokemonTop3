@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
-import { GENERATIONS } from "@/utils/consts";
+import { GENERATIONS, starters, regionalBird, regionalMammal, bug, fossil, babyPokemon, pikachuClone, eeveeForm, regionalForm, newEvolutionForms, megaEvolutions, gigantamaxPokemon, pseudoLegend, ultraBeast, paradox, boxLegendary, legendaryPokemon, mythical } from "@/utils/consts";
 import type { PokeAPI } from "pokeapi-types";
 
 interface PokemonCardListProps {
@@ -15,6 +15,7 @@ interface PokemonCardListProps {
   currentGenerationIndex?: number;
   showId?: boolean;
   showGenerationBadge?: boolean;
+  currentCategory?: string; // Nouvelle prop pour la catégorie actuelle
 }
 
 export function PokemonCardList({
@@ -24,12 +25,45 @@ export function PokemonCardList({
   currentGenerationIndex = 0,
   showId = false,
   showGenerationBadge = false,
+  currentCategory, // Nouvelle prop
 }: PokemonCardListProps) {
   const search = useSearch({ from: "/" });
   const shiny = search.version;
+  const step = search.step;
 
   const getCurrentGenerationName = () => {
     return GENERATIONS[currentGenerationIndex]?.name || "Inconnue";
+  };
+
+  // Fonction pour déterminer la catégorie d'un Pokémon basé sur son ID
+  const getPokemonCategory = (pokemonId: number) => {
+    const categories = [
+      { key: "starters", data: starters },
+      { key: "regionalBird", data: regionalBird },
+      { key: "regionalMammal", data: regionalMammal },
+      { key: "bug", data: bug },
+      { key: "fossil", data: fossil },
+      { key: "babyPokemon", data: babyPokemon },
+      { key: "pikachuClone", data: pikachuClone },
+      { key: "eeveeForm", data: eeveeForm },
+      { key: "regionalForm", data: regionalForm },
+      { key: "newEvolutionForms", data: newEvolutionForms },
+      { key: "megaEvolutions", data: megaEvolutions },
+      { key: "gigantamaxPokemon", data: gigantamaxPokemon },
+      { key: "pseudoLegend", data: pseudoLegend },
+      { key: "ultraBeasts", data: ultraBeast },
+      { key: "paradox", data: paradox },
+      { key: "boxLegendary", data: boxLegendary },
+      { key: "legendary", data: legendaryPokemon },
+      { key: "mythicals", data: mythical },
+    ];
+
+    for (const category of categories) {
+      if (category.data?.some((pokemon: any) => pokemon.id === pokemonId)) {
+        return category.key;
+      }
+    }
+    return "unknown"; // Fallback si aucune catégorie n'est trouvée
   };
 
   const isPokemonSelected = (pokemon: any) => {
@@ -42,11 +76,10 @@ export function PokemonCardList({
       return search.pokemons.includes(
         `${extractPokemonIdFromUrl(pokemon.url)}-${generationName}`
       );
-    } else if (selector === "optionals") {
-      // Pour les optionnels, on utilise l'ID directement
-      return search.pokemons.includes(
-        `${pokemon.id}-${getCurrentGenerationName()}`
-      );
+    } else if (selector === "optionals" && currentCategory) {
+      // Vérifier si ce Pokémon est sélectionné dans cette catégorie
+      const pokemonEntry = `${getPokemonName(pokemon)}-${currentCategory}`;
+      return search.OptionalPokemons?.includes(pokemonEntry) || false;
     }
     return false;
   };
@@ -90,16 +123,17 @@ export function PokemonCardList({
           ],
         ],
       };
-    } else if (selector === "optionals") {
-      const generationName = getCurrentGenerationName();
+    } else if (selector === "optionals" && currentCategory) {
+      const category = currentCategory;
+      const newPokemonEntry = `${getPokemonName(pokemon)}-${category}`;
+      
+      const filteredOptionalPokemons = search.OptionalPokemons?.filter(
+        (p: string) => !p.endsWith(`-${category}`)
+      ) || [];
+      
       return {
         ...search,
-        pokemons: [
-          ...[
-            ...search.pokemons.filter((p: string) => !p.endsWith(`-${generationName}`)),
-            `${pokemonId}-${generationName}`,
-          ],
-        ],
+        OptionalPokemons: [newPokemonEntry, ...filteredOptionalPokemons]
       };
     }
     

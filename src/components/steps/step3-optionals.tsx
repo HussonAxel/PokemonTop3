@@ -98,6 +98,7 @@ export default function Step3Optionals() {
                 currentGenerationIndex={0}
                 showId={true}
                 showGenerationBadge={false}
+                currentCategory={category.key}
               />
             </div>
           );
