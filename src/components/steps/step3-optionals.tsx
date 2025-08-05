@@ -34,25 +34,20 @@ export default function Step3Optionals() {
   const categories = [
     // Pokémon de base et populaires
     { key: "starters", data: starters, title: "Starter Pokémon" },
-    { key: "pikachuClone", data: pikachuClone, title: "Pikachu Clones" },
-    { key: "eeveeForm", data: eeveeForm, title: "Eeveelutions" },
-    { key: "babyPokemon", data: babyPokemon, title: "Baby Pokémon" },
-
-    // Pokémon régionaux
     { key: "regionalBird", data: regionalBird, title: "Regional Birds" },
     { key: "regionalMammal", data: regionalMammal, title: "Regional Mammals" },
     { key: "bug", data: bug, title: "Bug Pokémon" },
     { key: "fossil", data: fossil, title: "Fossil Pokémon" },
+    { key: "babyPokemon", data: babyPokemon, title: "Baby Pokémon" },
+    { key: "pikachuClone", data: pikachuClone, title: "Pikachu Clones" },
+    { key: "eeveeForm", data: eeveeForm, title: "Eeveelutions" },
+
+    // Pokémon régionaux
+    { key: "regionalForm", data: regionalForm, title: "Regional Forms" },
     {
       key: "newEvolutionForms",
       data: newEvolutionForms,
       title: "New Evolution Forms",
-    },
-    { key: "regionalForm", data: regionalForm, title: "Regional Forms" },
-    {
-      key: "gigantamaxForms",
-      data: gigantamaxForms,
-      title: "Gigantamax Forms",
     },
     { key: "megaEvolutions", data: megaEvolutions, title: "Mega Evolutions" },
     {
