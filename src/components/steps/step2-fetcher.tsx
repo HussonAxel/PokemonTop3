@@ -1,24 +1,19 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useQueryClient } from "@tanstack/react-query";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   useGetPokemonsPerType,
   useGetPokemonsPerGeneration,
   useGetTypes,
+  QUERY_KEYS,
+  fetchPokemonsPerType,
+  fetchPokemonsPerGeneration,
 } from "@/services/pokemons";
 import { PokemonCardList } from "@/components/ui/pokemon-card-list";
 
 import { Button } from "../ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Hash,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Hash } from "lucide-react";
 
 import { GENERATIONS } from "@/utils/consts";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
@@ -26,6 +21,7 @@ import { extractPokemonIdFromUrl } from "@/utils/functions";
 export default function Step2Fetcher() {
   let typeIsSelected, generationIsSelected;
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const search = useSearch({ from: "/" });
   const selector = search.selector;
   const type = search.type;
@@ -40,11 +36,10 @@ export default function Step2Fetcher() {
       )
       .map((type: any) => type.name) || [];
 
-      let pokemonsData;
+  let pokemonsData;
 
   if (selector === "types") {
-    pokemonsData = useGetPokemonsPerType(search.type || "").data
-
+    pokemonsData = useGetPokemonsPerType(search.type || "").data;
   } else if (selector === "generations") {
     pokemonsData = useGetPokemonsPerGeneration(
       search.generation?.[1] || ""
@@ -62,10 +57,10 @@ export default function Step2Fetcher() {
     );
 
     if (pokemonsDataTypes?.pokemon && pokemonsDataGenerations) {
-      const generationPokemonIds = pokemonsDataGenerations.map((pokemon: any) => 
+      const generationPokemonIds = pokemonsDataGenerations.map((pokemon: any) =>
         extractPokemonIdFromUrl(pokemon.url)
       );
-      
+
       pokemonsData = pokemonsDataTypes.pokemon.filter((typePokemon: any) => {
         const pokemonId = extractPokemonIdFromUrl(typePokemon.pokemon.url);
         return generationPokemonIds.includes(pokemonId);
@@ -116,6 +111,33 @@ export default function Step2Fetcher() {
       GENERATIONS[previousIndex].start.toString(),
       GENERATIONS[previousIndex].end.toString(),
     ];
+  };
+
+  const prefetchNextData = () => {
+    if (selector === "types") {
+      const nextType = getNextType();
+      queryClient.ensureQueryData({
+        queryKey: QUERY_KEYS.pokemonsPerTypes(nextType),
+        queryFn: () => fetchPokemonsPerType(nextType),
+      });
+    } else if (selector === "generations") {
+      const nextGeneration = getNextGeneration();
+      queryClient.ensureQueryData({
+        queryKey: QUERY_KEYS.pokemonsPerGenerations(nextGeneration[1]),
+        queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
+      });
+    } else if (selector === "both") {
+      const nextType = getNextType();
+      const nextGeneration = getNextGeneration();
+      queryClient.ensureQueryData({
+        queryKey: QUERY_KEYS.pokemonsPerTypes(nextType),
+        queryFn: () => fetchPokemonsPerType(nextType),
+      });
+      queryClient.ensureQueryData({
+        queryKey: QUERY_KEYS.pokemonsPerGenerations(nextGeneration[1]),
+        queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
+      });
+    }
   };
 
   const navigateToNext = () => {
@@ -299,6 +321,7 @@ export default function Step2Fetcher() {
             <Button
               variant="outline"
               onClick={navigateToNext}
+              onMouseEnter={prefetchNextData}
               className="flex items-center gap-2"
             >
               Suivant
