@@ -10,7 +10,7 @@ import type { PokeAPI } from "pokeapi-types";
 
 interface PokemonCardListProps {
   data: PokeAPI.TypePokemon[] | PokeAPI.NamedAPIResource[] | any[];
-  selector?: "types" | "generations" | "optionals";
+  selector?: "types" | "generations" | "optionals" | "both";
   currentType?: string;
   currentGenerationIndex?: number;
   showId?: boolean;
@@ -78,7 +78,7 @@ export function PokemonCardList({
       );
     } else if (selector === "optionals" && currentCategory) {
       // Vérifier si ce Pokémon est sélectionné dans cette catégorie
-      const pokemonEntry = `${getPokemonName(pokemon)}-${currentCategory}`;
+      const pokemonEntry = `${getPokemonId(pokemon)}-${currentCategory}`;
       return search.OptionalPokemons?.includes(pokemonEntry) || false;
     }
     return false;
@@ -125,8 +125,8 @@ export function PokemonCardList({
       };
     } else if (selector === "optionals" && currentCategory) {
       const category = currentCategory;
-      const newPokemonEntry = `${getPokemonName(pokemon)}-${category}`;
-      
+      const newPokemonEntry = `${pokemonId.toString()}-${category}`;
+
       const filteredOptionalPokemons = search.OptionalPokemons?.filter(
         (p: string) => !p.endsWith(`-${category}`)
       ) || [];
@@ -150,7 +150,7 @@ export function PokemonCardList({
             <div
               key={`${getPokemonName(pokemon)}`}
               data-state={isPokemonSelected(pokemon) ? "checked" : "unchecked"}
-              className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
+              className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
             >
               <Link
                 to="/"
@@ -158,7 +158,7 @@ export function PokemonCardList({
                 className="w-full items-center"
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Image
                     src={
                       shiny === "shiny"
@@ -169,7 +169,7 @@ export function PokemonCardList({
                     width={120}
                     height={120}
                     alt={getPokemonName(pokemon)}
-                    className="relative z-10 transition-transform duration-200 group-hover:scale-110"
+                    className="relative z-10 transition-transform group-hover:scale-110"
                   />
                 </div>
 

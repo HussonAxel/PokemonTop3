@@ -9,7 +9,6 @@ import {
   eeveeForm,
   fossil,
   regionalForm,
-  gigantamaxForms,
   boxLegendary,
   mythical,
   ultraBeast,

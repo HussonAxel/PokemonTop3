@@ -7,7 +7,6 @@ export const pickerSelector = [
 export const pokemonStatusVersion = [
   { value: "normal", label: "Normal" },
   { value: "shiny", label: "Shiny" },
-  { value: "both", label: "Both" },
 ];
 
 export const pokemonsOptions = [

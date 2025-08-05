@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { GENERATIONS } from "@/utils/consts";
+import { extractPokemonIdFromUrl } from "@/utils/functions";
 
 export default function Step2Fetcher() {
   let typeIsSelected, generationIsSelected;
@@ -39,15 +40,41 @@ export default function Step2Fetcher() {
       )
       .map((type: any) => type.name) || [];
 
-  const pokemonsData =
-    selector === "types"
-      ? useGetPokemonsPerType(search.type || "").data
-      : useGetPokemonsPerGeneration(
-          search.generation?.[1] || ""
-        ).data?.results.slice(
-          generation?.[0] ? parseInt(generation[0]) - 1 : 0,
-          generation?.[1] ? parseInt(generation[1]) : 0
-        );
+      let pokemonsData;
+
+  if (selector === "types") {
+    pokemonsData = useGetPokemonsPerType(search.type || "").data
+
+  } else if (selector === "generations") {
+    pokemonsData = useGetPokemonsPerGeneration(
+      search.generation?.[1] || ""
+    ).data?.results.slice(
+      generation?.[0] ? parseInt(generation[0]) - 1 : 0,
+      generation?.[1] ? parseInt(generation[1]) : 0
+    );
+  } else if (selector === "both") {
+    const pokemonsDataTypes = useGetPokemonsPerType(search.type || "").data;
+    const pokemonsDataGenerations = useGetPokemonsPerGeneration(
+      search.generation?.[1] || ""
+    ).data?.results.slice(
+      generation?.[0] ? parseInt(generation[0]) - 1 : 0,
+      generation?.[1] ? parseInt(generation[1]) : 0
+    );
+
+    if (pokemonsDataTypes?.pokemon && pokemonsDataGenerations) {
+      const generationPokemonIds = pokemonsDataGenerations.map((pokemon: any) => 
+        extractPokemonIdFromUrl(pokemon.url)
+      );
+      
+      pokemonsData = pokemonsDataTypes.pokemon.filter((typePokemon: any) => {
+        const pokemonId = extractPokemonIdFromUrl(typePokemon.pokemon.url);
+        return generationPokemonIds.includes(pokemonId);
+      });
+    } else {
+      pokemonsData = pokemonsDataTypes?.pokemon || [];
+    }
+    console.log("Pokemons Data:", pokemonsData);
+  }
 
   const getCurrentTypeIndex = () => {
     return filteredTypes.findIndex((type: string) => type === search.type);
@@ -300,7 +327,13 @@ export default function Step2Fetcher() {
           )}
 
           {selector === "both" && (
-            <p>Je suis un test</p>
+            <PokemonCardList
+              data={pokemonsData || []}
+              selector="types"
+              currentType={search.type}
+              currentGenerationIndex={getCurrentGenerationIndex()}
+              showGenerationBadge={false}
+            />
           )}
         </CardContent>
       </Card>
