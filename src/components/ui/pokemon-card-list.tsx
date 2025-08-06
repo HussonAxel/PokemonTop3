@@ -126,7 +126,7 @@ export function PokemonCardList({
                   <RadioGroupItem
                     id={`${id}-${pokemonValue}`}
                     value={pokemonValue}
-                    className="order-1 after:absolute after:inset-0 bg-red-500"
+                    className="order-1 after:absolute after:inset-0"
                   />
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
