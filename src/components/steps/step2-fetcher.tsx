@@ -19,13 +19,12 @@ import { GENERATIONS } from "@/utils/consts";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
 
 export default function Step2Fetcher() {
-  let typeIsSelected, generationIsSelected;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const search = useSearch({ from: "/" });
   const selector = search.selector;
   const type = search.type;
-  const pokemons = search.pokemons;
+  const pokemons = search.pokemons || [];
   const generation = search.generation;
 
   const { data: types } = useGetTypes();
@@ -68,7 +67,6 @@ export default function Step2Fetcher() {
     } else {
       pokemonsData = pokemonsDataTypes?.pokemon || [];
     }
-    console.log("Pokemons Data:", pokemonsData);
   }
 
   const getCurrentTypeIndex = () => {
@@ -140,39 +138,71 @@ export default function Step2Fetcher() {
     }
   };
 
-  const navigateToNext = () => {
-    if (type) {
-      typeIsSelected = type
-        ? pokemons.some((pokemon: string) => pokemon.endsWith(`-${type}`))
-        : false;
-      if (!typeIsSelected) return;
+  const isCurrentTypeSelected = () => {
+    if (selector === "types" && type) {
+      return pokemons.some((pokemon: string) => pokemon.endsWith(`-${type}`));
     }
+    return false;
+  };
 
-    if (generation) {
-      const currentGenerationName =
-        GENERATIONS[getCurrentGenerationIndex()]?.name;
-      generationIsSelected = currentGenerationName
-        ? pokemons.some((pokemon: string) =>
-            pokemon.endsWith(`-${currentGenerationName}`)
-          )
-        : false;
-
-      if (!generationIsSelected) {
-        const generationStart = parseInt(generation[0]);
-        const generationEnd = parseInt(generation[1]);
-        generationIsSelected = pokemons.some((pokemon: string) => {
-          const pokemonId = parseInt(pokemon.split("-")[0]);
-          return pokemonId >= generationStart && pokemonId <= generationEnd;
-        });
+  const isCurrentGenerationSelected = () => {
+    if (selector === "generations" && generation) {
+      const currentGenerationName = GENERATIONS[getCurrentGenerationIndex()]?.name;
+      if (currentGenerationName) {
+        return pokemons.some((pokemon: string) => pokemon.endsWith(`-${currentGenerationName}`));
       }
+      const generationStart = parseInt(generation[0]);
+      const generationEnd = parseInt(generation[1]);
+      return pokemons.some((pokemon: string) => {
+        const pokemonId = parseInt(pokemon.split("-")[0]);
+        return pokemonId >= generationStart && pokemonId <= generationEnd;
+      });
+    }
+    return false;
+  };
 
-      if (!generationIsSelected) return;
+  const isCurrentBothSelected = () => {
+    if (selector === "both" && type && generation) {
+      const currentGenerationName = GENERATIONS[getCurrentGenerationIndex()]?.name;
+      return pokemons.some((pokemon: string) => 
+        pokemon.endsWith(`-${type}`) && pokemon.includes(`-${currentGenerationName}`)
+      );
+    }
+    return false;
+  };
+
+  const navigateToNext = () => {
+    let isSelected = false;
+    
+    if (selector === "types") {
+      isSelected = isCurrentTypeSelected();
+    } else if (selector === "generations") {
+      isSelected = isCurrentGenerationSelected();
+    } else if (selector === "both") {
+      isSelected = isCurrentBothSelected();
     }
 
-    if (
-      (type && pokemons.length === 18) ||
-      (generation && pokemons.length === 9)
-    ) {
+    if (!isSelected) {
+      console.log("Aucun Pokémon sélectionné pour le type/génération actuel");
+      return;
+    }
+
+    const totalTypes = filteredTypes.length;
+    const totalGenerations = GENERATIONS.length;
+    
+    let shouldProceedToNextStep = false;
+    
+    if (selector === "types") {
+      const selectedTypes = pokemons.map((p: string) => p.split("-")[1]).filter(Boolean);
+      shouldProceedToNextStep = selectedTypes.length >= totalTypes;
+    } else if (selector === "generations") {
+      const selectedGenerations = pokemons.map((p: string) => p.split("-")[1]).filter(Boolean);
+      shouldProceedToNextStep = selectedGenerations.length >= totalGenerations;
+    } else if (selector === "both") {
+      shouldProceedToNextStep = pokemons.length >= (totalTypes * totalGenerations);
+    }
+
+    if (shouldProceedToNextStep) {
       navigate({
         to: "/",
         search: {
@@ -182,7 +212,6 @@ export default function Step2Fetcher() {
       });
       return;
     }
-
     const searchParams: any = { ...search };
 
     if (selector === "types") {
@@ -210,6 +239,19 @@ export default function Step2Fetcher() {
     }
 
     navigate({ search: searchParams });
+  };
+
+  const getSelectionStatus = () => {
+    if (selector === "types") {
+      const selectedTypes = pokemons.map((p: string) => p.split("-")[1]).filter(Boolean);
+      return `${selectedTypes.length}/${filteredTypes.length} types sélectionnés`;
+    } else if (selector === "generations") {
+      const selectedGenerations = pokemons.map((p: string) => p.split("-")[1]).filter(Boolean);
+      return `${selectedGenerations.length}/${GENERATIONS.length} générations sélectionnées`;
+    } else if (selector === "both") {
+      return `${pokemons.length} Pokémon sélectionnés`;
+    }
+    return "";
   };
 
   if (!pokemonsData) {
@@ -275,6 +317,10 @@ export default function Step2Fetcher() {
             Sélection des Pokémon
           </CardTitle>
 
+          <div className="text-sm text-muted-foreground">
+            {getSelectionStatus()}
+          </div>
+
           <div className="flex gap-4 items-center justify-center mt-4">
             <Button
               variant="outline"
@@ -323,6 +369,11 @@ export default function Step2Fetcher() {
               onClick={navigateToNext}
               onMouseEnter={prefetchNextData}
               className="flex items-center gap-2"
+              disabled={
+                (selector === "types" && !isCurrentTypeSelected()) ||
+                (selector === "generations" && !isCurrentGenerationSelected()) ||
+                (selector === "both" && !isCurrentBothSelected())
+              }
             >
               Suivant
               <ArrowRight className="w-4 h-4" />

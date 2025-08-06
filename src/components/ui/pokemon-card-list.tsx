@@ -80,19 +80,29 @@ export function PokemonCardList({
 
   const getSearchParams = (value: string) => {
     if (selector === "types" && currentType) {
+      const filteredPokemons = search.pokemons?.filter((p: string) => !p.endsWith(`-${currentType}`)) || [];
+      const newPokemons = value ? [...filteredPokemons, value] : filteredPokemons;
+      
       return {
         ...search,
-        pokemons: value ? [value] : [],
+        pokemons: newPokemons,
       };
     } else if (selector === "generations") {
+      const currentGenerationName = getCurrentGenerationName();
+      const filteredPokemons = search.pokemons?.filter((p: string) => !p.endsWith(`-${currentGenerationName}`)) || [];
+      const newPokemons = value ? [...filteredPokemons, value] : filteredPokemons;
+      
       return {
         ...search,
-        pokemons: value ? [value] : [],
+        pokemons: newPokemons,
       };
     } else if (selector === "optionals" && currentCategory) {
+      const filteredPokemons = search.OptionalPokemons?.filter((p: string) => !p.endsWith(`-${currentCategory}`)) || [];
+      const newPokemons = value ? [...filteredPokemons, value] : filteredPokemons;
+      
       return {
         ...search,
-        OptionalPokemons: value ? [value] : [],
+        OptionalPokemons: newPokemons,
       };
     }
 
