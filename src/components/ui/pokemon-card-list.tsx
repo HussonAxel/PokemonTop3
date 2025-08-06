@@ -1,30 +1,12 @@
-import { useSearch } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
+import { useId } from "react";
 import {
   GENERATIONS,
-  starters,
-  regionalBird,
-  regionalMammal,
-  bug,
-  fossil,
-  babyPokemon,
-  pikachuClone,
-  eeveeForm,
-  regionalForm,
-  newEvolutionForms,
-  megaEvolutions,
-  gigantamaxPokemon,
-  pseudoLegend,
-  ultraBeast,
-  paradox,
-  boxLegendary,
-  legendaryPokemon,
-  mythical,
 } from "@/utils/consts";
 import type { PokeAPI } from "pokeapi-types";
 
@@ -35,7 +17,7 @@ interface PokemonCardListProps {
   currentGenerationIndex?: number;
   showId?: boolean;
   showGenerationBadge?: boolean;
-  currentCategory?: string; // Nouvelle prop pour la catégorie actuelle
+  currentCategory?: string;
 }
 
 export function PokemonCardList({
@@ -45,63 +27,15 @@ export function PokemonCardList({
   currentGenerationIndex = 0,
   showId = false,
   showGenerationBadge = false,
-  currentCategory, // Nouvelle prop
+  currentCategory,
 }: PokemonCardListProps) {
+  const navigate = useNavigate();
   const search = useSearch({ from: "/" });
   const shiny = search.version;
-  const step = search.step;
+  const id = useId();
 
   const getCurrentGenerationName = () => {
     return GENERATIONS[currentGenerationIndex]?.name || "Inconnue";
-  };
-
-  // Fonction pour déterminer la catégorie d'un Pokémon basé sur son ID
-  const getPokemonCategory = (pokemonId: number) => {
-    const categories = [
-      { key: "starters", data: starters },
-      { key: "regionalBird", data: regionalBird },
-      { key: "regionalMammal", data: regionalMammal },
-      { key: "bug", data: bug },
-      { key: "fossil", data: fossil },
-      { key: "babyPokemon", data: babyPokemon },
-      { key: "pikachuClone", data: pikachuClone },
-      { key: "eeveeForm", data: eeveeForm },
-      { key: "regionalForm", data: regionalForm },
-      { key: "newEvolutionForms", data: newEvolutionForms },
-      { key: "megaEvolutions", data: megaEvolutions },
-      { key: "gigantamaxPokemon", data: gigantamaxPokemon },
-      { key: "pseudoLegend", data: pseudoLegend },
-      { key: "ultraBeasts", data: ultraBeast },
-      { key: "paradox", data: paradox },
-      { key: "boxLegendary", data: boxLegendary },
-      { key: "legendary", data: legendaryPokemon },
-      { key: "mythicals", data: mythical },
-    ];
-
-    for (const category of categories) {
-      if (category.data?.some((pokemon: any) => pokemon.id === pokemonId)) {
-        return category.key;
-      }
-    }
-    return "unknown"; // Fallback si aucune catégorie n'est trouvée
-  };
-
-  const isPokemonSelected = (pokemon: any) => {
-    if (selector === "types" && currentType) {
-      return search.pokemons.includes(
-        `${extractPokemonIdFromUrl(pokemon.pokemon?.url || pokemon.url)}-${currentType}`
-      );
-    } else if (selector === "generations") {
-      const generationName = getCurrentGenerationName();
-      return search.pokemons.includes(
-        `${extractPokemonIdFromUrl(pokemon.url)}-${generationName}`
-      );
-    } else if (selector === "optionals" && currentCategory) {
-      // Vérifier si ce Pokémon est sélectionné dans cette catégorie
-      const pokemonEntry = `${getPokemonId(pokemon)}-${currentCategory}`;
-      return search.OptionalPokemons?.includes(pokemonEntry) || false;
-    }
-    return false;
   };
 
   const getPokemonId = (pokemon: any) => {
@@ -118,46 +52,47 @@ export function PokemonCardList({
     return pokemon.name;
   };
 
-  const getSearchParams = (pokemon: any) => {
+  const getPokemonValue = (pokemon: any) => {
     const pokemonId = getPokemonId(pokemon);
+    
+    if (selector === "types" && currentType) {
+      return `${pokemonId}-${currentType}`;
+    } else if (selector === "generations") {
+      const generationName = getCurrentGenerationName();
+      return `${pokemonId}-${generationName}`;
+    } else if (selector === "optionals" && currentCategory) {
+      return `${pokemonId}-${currentCategory}`;
+    }
+    return `${pokemonId}`;
+  };
 
+  const getDefaultValue = () => {
+    if (selector === "types" && currentType && search.pokemons?.length > 0) {
+      return search.pokemons.find((p: string) => p.endsWith(`-${currentType}`)) || "";
+    } else if (selector === "generations") {
+      const generationName = getCurrentGenerationName();
+      return search.pokemons?.find((p: string) => p.endsWith(`-${generationName}`)) || "";
+    } else if (selector === "optionals" && currentCategory && search.OptionalPokemons?.length > 0) {
+      return search.OptionalPokemons.find((p: string) => p.endsWith(`-${currentCategory}`)) || "";
+    }
+    return "";
+  };
+
+  const getSearchParams = (value: string) => {
     if (selector === "types" && currentType) {
       return {
         ...search,
-        pokemons: [
-          ...[
-            ...search.pokemons.filter(
-              (p: string) => !p.endsWith(`-${currentType}`)
-            ),
-            `${pokemonId}-${currentType}`,
-          ],
-        ],
+        pokemons: value ? [value] : [],
       };
     } else if (selector === "generations") {
-      const generationName = getCurrentGenerationName();
       return {
         ...search,
-        pokemons: [
-          ...[
-            ...search.pokemons.filter(
-              (p: string) => !p.endsWith(`-${generationName}`)
-            ),
-            `${pokemonId}-${generationName}`,
-          ],
-        ],
+        pokemons: value ? [value] : [],
       };
     } else if (selector === "optionals" && currentCategory) {
-      const category = currentCategory;
-      const newPokemonEntry = `${pokemonId.toString()}-${category}`;
-
-      const filteredOptionalPokemons =
-        search.OptionalPokemons?.filter(
-          (p: string) => !p.endsWith(`-${category}`)
-        ) || [];
-
       return {
         ...search,
-        OptionalPokemons: [newPokemonEntry, ...filteredOptionalPokemons],
+        OptionalPokemons: value ? [value] : [],
       };
     }
 
@@ -169,41 +104,54 @@ export function PokemonCardList({
       <Separator className="my-4" />
 
       <div className="relative">
-        <RadioGroup className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12 gap-4 p-6 rounded-lg border border-border/50">
-          {data?.map((pokemon: any) => (
-            <div
-              key={`${getPokemonName(pokemon)}`}
-              data-state={isPokemonSelected(pokemon) ? "checked" : "unchecked"}
-              className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-border/50 bg-card p-4 shadow-sm outline-none hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] data-[state=checked]:border-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-lg"
-            >
-              <Link
-                to="/"
-                search={getSearchParams(pokemon)}
-                className="w-full items-center"
+        <RadioGroup 
+          className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12 gap-4 p-6 rounded-lg border border-border/50"
+          defaultValue={getDefaultValue()}
+          onValueChange={(value) => {
+            const newSearch = getSearchParams(value);
+            navigate({ to: "/", search: newSearch });
+          }}
+        >
+          {data?.map((pokemon: any) => {
+            const pokemonValue = getPokemonValue(pokemon);
+            const pokemonId = getPokemonId(pokemon);
+            const pokemonName = getPokemonName(pokemon);
+            
+            return (
+              <div
+                key={`${id}-${pokemonValue}`}
+                className="border-input has-data-[state=checked]:border-primary/50 relative flex flex-col gap-3 rounded-lg border-2 p-4 shadow-sm outline-none hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] transition-all duration-200 ease-in-out"
               >
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Image
-                    src={
-                      shiny === "shiny"
-                        ? `/assets/sprites/shiny/${getPokemonId(pokemon)}.webp`
-                        : `/assets/sprites/base/${getPokemonId(pokemon)}.webp`
-                    }
-                    layout="constrained"
-                    width={70}
-                    height={70}
-                    alt={getPokemonName(pokemon)}
-                    className="relative z-10 transition-transform group-hover:scale-110"
+                <div className="flex justify-between gap-2">
+                  <RadioGroupItem
+                    id={`${id}-${pokemonValue}`}
+                    value={pokemonValue}
+                    className="order-1 after:absolute after:inset-0"
                   />
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <Image
+                      src={
+                        shiny === "shiny"
+                          ? `/assets/sprites/shiny/${pokemonId}.webp`
+                          : `/assets/sprites/base/${pokemonId}.webp`
+                      }
+                      layout="constrained"
+                      width={70}
+                      height={70}
+                      alt={pokemonName}
+                      className="relative z-10 transition-transform duration-200 ease-in-out group-hover:scale-110"
+                    />
+                  </div>
                 </div>
 
                 <div className="text-center space-y-1 mt-2">
                   <p className="font-medium text-sm capitalize text-foreground">
-                    {getPokemonName(pokemon)}
+                    {pokemonName}
                   </p>
                   {showId && (
                     <Badge variant="outline" className="text-xs">
-                      #{getPokemonId(pokemon)}
+                      #{pokemonId}
                     </Badge>
                   )}
                   {showGenerationBadge && (
@@ -212,16 +160,9 @@ export function PokemonCardList({
                     </Badge>
                   )}
                 </div>
-
-                <RadioGroupItem
-                  value={getPokemonName(pokemon)}
-                  id={`${getPokemonName(pokemon)}-${getPokemonId(pokemon)}`}
-                  className="absolute inset-0 opacity-0 cursor-pointer hidden"
-                  checked={isPokemonSelected(pokemon)}
-                />
-              </Link>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </RadioGroup>
       </div>
     </div>

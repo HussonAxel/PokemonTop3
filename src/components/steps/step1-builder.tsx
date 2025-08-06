@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useId } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -99,28 +98,25 @@ export default function Step1Builder({ search }: { search: any }) {
                   to={`/`}
                   search={{ ...search, selector: item.value }}
                 >
-                  <div
-                    className={`group relative flex flex-col gap-4 rounded-xl border-2 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[102%] ${
-                      search.selector === item.value
-                        ? "border-primary bg-primary/5 shadow-lg"
-                        : "border-border/50 hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem
-                        id={`${id}-${item.value}`}
-                        value={item.value}
-                        checked={search.selector === item.value}
-                        className="after:absolute after:inset-0"
-                      />
-                      <Label
-                        htmlFor={`${id}-${item.value}`}
-                        className="text-base font-medium cursor-pointer"
-                      >
-                        {item.label}
-                      </Label>
+                  <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-4 py-6 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
+                    <RadioGroupItem
+                      id={`${id}-${item.value}`}
+                      value={item.value}
+                      checked={search.selector === item.value}
+                      className="sr-only"
+                    />
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-primary font-bold text-sm">
+                        {item.value === "generations" ? "G" : item.value === "types" ? "T" : "B"}
+                      </span>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <label
+                      htmlFor={`${id}-${item.value}`}
+                      className="text-foreground cursor-pointer text-sm leading-none font-medium after:absolute after:inset-0"
+                    >
+                      {item.label}
+                    </label>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {
                         optionDescriptions[
                           item.value as keyof typeof optionDescriptions
@@ -149,35 +145,32 @@ export default function Step1Builder({ search }: { search: any }) {
               </div>
             </div>
 
-            <RadioGroup className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <RadioGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {pokemonStatusVersion.map((item) => (
                 <Link
                   key={item.value}
                   to={`/`}
                   search={{ ...search, version: item.value }}
                 >
-                  <div
-                    className={`group relative flex flex-col gap-4 rounded-xl border-2 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[102%] ${
-                      search.version === item.value
-                        ? "border-primary bg-primary/5 shadow-lg"
-                        : "border-border/50 hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem
-                        id={`${id}-version-${item.value}`}
-                        value={item.value}
-                        checked={search.version === item.value}
-                        className="after:absolute after:inset-0"
-                      />
-                      <Label
-                        htmlFor={`${id}-version-${item.value}`}
-                        className="text-base font-medium cursor-pointer"
-                      >
-                        {item.label}
-                      </Label>
+                  <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-4 py-6 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
+                    <RadioGroupItem
+                      id={`${id}-version-${item.value}`}
+                      value={item.value}
+                      checked={search.version === item.value}
+                      className="sr-only"
+                    />
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-primary font-bold text-sm">
+                        {item.value === "normal" ? "N" : "S"}
+                      </span>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <label
+                      htmlFor={`${id}-version-${item.value}`}
+                      className="text-foreground cursor-pointer text-sm leading-none font-medium after:absolute after:inset-0"
+                    >
+                      {item.label}
+                    </label>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {
                         optionDescriptions[
                           item.value as keyof typeof optionDescriptions
@@ -224,25 +217,24 @@ export default function Step1Builder({ search }: { search: any }) {
                       pokemonsOptions: newPokemonsOptions,
                     }}
                   >
-                    <div
-                      className={`group relative flex items-center gap-3 rounded-lg border-2 p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[102%] ${
-                        isChecked
-                          ? "border-primary bg-primary/5 shadow-lg"
-                          : "border-border/50 hover:border-primary/50"
-                      }`}
-                    >
+                    <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-2 rounded-md border px-3 py-4 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
                       <Checkbox
                         id={`${id}-option-${item.value}`}
                         checked={isChecked}
                         value={item.value}
-                        className="after:absolute after:inset-0"
+                        className="sr-only"
                       />
-                      <Label
+                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-primary font-bold text-xs">
+                          {item.value.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <label
                         htmlFor={`${id}-option-${item.value}`}
-                        className="text-sm font-medium cursor-pointer leading-tight"
+                        className="text-foreground cursor-pointer text-xs leading-none font-medium after:absolute after:inset-0"
                       >
                         {item.label}
-                      </Label>
+                      </label>
                     </div>
                   </Link>
                 );
@@ -285,28 +277,25 @@ export default function Step1Builder({ search }: { search: any }) {
                   to={`/`}
                   search={{ ...search, selectRoster: item.value }}
                 >
-                  <div
-                    className={`group relative flex flex-col gap-4 rounded-xl border-2 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[102%] ${
-                      search.selectRoster === item.value
-                        ? "border-primary bg-primary/5 shadow-lg"
-                        : "border-border/50 hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem
-                        id={`${id}-roster-${item.value}`}
-                        value={item.value}
-                        checked={search.selectRoster === item.value}
-                        className="after:absolute after:inset-0"
-                      />
-                      <Label
-                        htmlFor={`${id}-roster-${item.value}`}
-                        className="text-base font-medium cursor-pointer"
-                      >
-                        {item.label}
-                      </Label>
+                  <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-4 py-6 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
+                    <RadioGroupItem
+                      id={`${id}-roster-${item.value}`}
+                      value={item.value}
+                      checked={search.selectRoster === item.value}
+                      className="sr-only"
+                    />
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-primary font-bold text-sm">
+                        {item.value === "yes" ? "6" : "∞"}
+                      </span>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <label
+                      htmlFor={`${id}-roster-${item.value}`}
+                      className="text-foreground cursor-pointer text-sm leading-none font-medium after:absolute after:inset-0"
+                    >
+                      {item.label}
+                    </label>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {
                         optionDescriptions[
                           item.value as keyof typeof optionDescriptions
@@ -318,6 +307,7 @@ export default function Step1Builder({ search }: { search: any }) {
               ))}
             </RadioGroup>
           </div>
+          
           {/* Bouton Start Picker modernisé */}
           <Button
             size="lg"
