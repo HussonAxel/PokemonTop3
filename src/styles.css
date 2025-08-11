@@ -329,9 +329,190 @@ code {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     letter-spacing:
-    var(--tracking-normal);
+      var(--tracking-normal);
   }
+}
+
+.bg-bug,
+.bug {
+  background: #92bc2c;
+  box-shadow: 0 0 5px #92bc2c
+}
+
+.bg-bug path {
+  fill: #92bc2c
+}
+
+.dark,
+.bg-dark {
+  background: #595761;
+  box-shadow: 0 0 5px #595761
+}
+
+.bg-dark path {
+  fill: #595761
+}
+
+.dragon,
+.bg-dragon {
+  background: #0c69c8;
+  box-shadow: 0 0 5px #0c69c8
+}
+
+.bg-dragon path {
+  fill: #0c69c8
+}
+
+.electric,
+.bg-electric {
+  background: #f2d94e;
+  box-shadow: 0 0 5px #f2d94e
+}
+
+.bg-electric path {
+  fill: #f2d94e
+}
+
+.fire,
+.bg-fire {
+  background: #fba54c;
+  box-shadow: 0 0 5px #fba64c
+}
+
+.bg-fire path {
+  fill: #fba54c
+}
+
+.fairy,
+.bg-fairy {
+  background: #ee90e6;
+  box-shadow: 0 0 5px #ee90e6
+}
+
+.bg-fairy path {
+  fill: #ee90e6
+}
+
+.fighting,
+.bg-fighting {
+  background: #d3425f;
+  box-shadow: 0 0 5px #d3425f
+}
+
+.bg-fighting path {
+  fill: #d3425f
+}
+
+.flying,
+.bg-flying {
+  background: #a1bbec;
+  box-shadow: 0 0 5px #a1bbec
+}
+
+.bg-flying path {
+  fill: #a1bbec
+}
+
+.ghost,
+.bg-ghost {
+  background: #5f6dbc;
+  box-shadow: 0 0 5px #5f6dbc
+}
+
+.bg-ghost path {
+  fill: #5f6dbc
+}
+
+.grass,
+.bg-grass {
+  background: #5fbd58;
+  box-shadow: 0 0 5px #5fbd58
+}
+
+.bg-grass path {
+  fill: #5fbd58
+}
+
+.ground,
+.bg-ground {
+  background: #da7c4d;
+  box-shadow: 0 0 5px #da7c4d
+}
+
+.bg-ground path {
+  fill: #da7c4d
+}
+
+.ice,
+.bg-ice {
+  background: #75d0c1;
+  box-shadow: 0 0 5px #75d0c1
+}
+
+.bg-ice path {
+  fill: #75d0c1
+}
+
+.normal,
+.bg-normal {
+  background: #a0a29f;
+  box-shadow: 0 0 5px #a0a29f
+}
+
+.bg-normal path {
+  fill: #a0a29f
+}
+
+.poison,
+.bg-poison {
+  background: #b763cf;
+  box-shadow: 0 0 5px #b763cf;
+}
+
+.bg-poison path {
+  fill: #b763cf
+}
+
+.psychic,
+.bg-psychic {
+  background: #fa8581;
+  box-shadow: 0 0 5px #fa8581
+}
+
+.bg-psychic path {
+  fill: #fa8581
+}
+
+.rock,
+.bg-rock {
+  background: #c9bb8a;
+  box-shadow: 0 0 5px #c9bb8a
+}
+
+.bg-rock path {
+  fill: #c9bb8a
+}
+
+.steel,
+.bg-steel {
+  background: #5695a3;
+  box-shadow: 0 0 5px #5695a3
+}
+
+.bg-steel path {
+  fill: #5695a3
+}
+
+.water,
+.bg-water {
+  background: #539ddf;
+  box-shadow: 0 0 5px #539ddf
+}
+
+.bg-water path {
+  fill: #539ddf
 }

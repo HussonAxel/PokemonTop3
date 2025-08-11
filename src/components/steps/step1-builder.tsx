@@ -1,11 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useId } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,7 +10,6 @@ import {
   SelectRoster,
 } from "@/utils/consts";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   prefetchPokemonPerType,
@@ -25,6 +18,7 @@ import {
 } from "@/services/pokemons";
 
 import { GENERATIONS } from "@/utils/consts";
+import BadgesSummary from "./badges-summary";
 
 export default function Step1Builder({ search }: { search: any }) {
   const { data: types } = useGetTypes();
@@ -58,23 +52,7 @@ export default function Step1Builder({ search }: { search: any }) {
     <div className="max-w-4xl mx-auto my-16">
       {/* En-tête avec gradient */}
       <Card className="overflow-hidden">
-        <div>
-          <CardHeader className="text-center pb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Badge variant="secondary" className="text-sm font-medium">
-                Étape 1
-              </Badge>
-            </div>
-            <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              Configuration du Picker
-            </CardTitle>
-            <CardDescription className="text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
-              Personnalisez votre expérience de sélection de Pokémon. Choisissez
-              votre méthode de navigation, vos préférences visuelles et les
-              options avancées.
-            </CardDescription>
-          </CardHeader>
-        </div>
+        <BadgesSummary />
 
         <CardContent className="space-y-8 pb-8">
           {/* Sélecteur de méthode */}
@@ -107,7 +85,11 @@ export default function Step1Builder({ search }: { search: any }) {
                     />
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <span className="text-primary font-bold text-sm">
-                        {item.value === "generations" ? "G" : item.value === "types" ? "T" : "B"}
+                        {item.value === "generations"
+                          ? "G"
+                          : item.value === "types"
+                            ? "T"
+                            : "B"}
                       </span>
                     </div>
                     <label
@@ -307,13 +289,14 @@ export default function Step1Builder({ search }: { search: any }) {
               ))}
             </RadioGroup>
           </div>
-          
+
           {/* Bouton Start Picker modernisé */}
           <Button
             size="lg"
-            className="flex items-center gap-3 px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            className="flex items-center gap-3 px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ml-auto"
             onClick={() => {
               navigate({
+                resetScroll: false,
                 search: {
                   ...search,
                   step: search.step + 1,

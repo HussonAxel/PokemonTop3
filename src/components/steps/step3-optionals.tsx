@@ -24,14 +24,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PokemonCardList } from "@/components/ui/pokemon-card-list";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "../ui/button";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function Step3Optionals() {
   const search = useSearch({ from: "/" });
   const pokemonOptions = search.pokemonsOptions;
+  const navigate = useNavigate({ from: "/" });
 
-  // Configuration des catégories avec leurs titres
   const categories = [
-    // Pokémon de base et populaires
     { key: "starters", data: starters, title: "Starter Pokémon" },
     { key: "regionalBird", data: regionalBird, title: "Regional Birds" },
     { key: "regionalMammal", data: regionalMammal, title: "Regional Mammals" },
@@ -41,7 +42,6 @@ export default function Step3Optionals() {
     { key: "pikachuClone", data: pikachuClone, title: "Pikachu Clones" },
     { key: "eeveeForm", data: eeveeForm, title: "Eeveelutions" },
 
-    // Pokémon régionaux
     { key: "regionalForm", data: regionalForm, title: "Regional Forms" },
     {
       key: "newEvolutionForms",
@@ -55,7 +55,6 @@ export default function Step3Optionals() {
       title: "Gigantamax Pokémon",
     },
 
-    // Pokémon puissants et légendaires
     { key: "pseudoLegend", data: pseudoLegend, title: "Pseudo-Legendaries" },
     { key: "ultraBeasts", data: ultraBeast, title: "Ultra Beasts" },
     { key: "paradox", data: paradox, title: "Paradox Pokémon" },
@@ -80,17 +79,17 @@ export default function Step3Optionals() {
       <CardContent className="space-y-8">
         {categories.map((category, index) => {
           if (!pokemonOptions.includes(category.key)) return null;
-          
+
           return (
             <div key={category.key}>
               {index > 0 && <Separator className="my-6" />}
-              
+
               <div className="mb-4">
                 <h3 className="text-xl font-semibold text-foreground mb-2">
                   {category.title}
                 </h3>
               </div>
-              
+
               <PokemonCardList
                 data={category.data}
                 selector="optionals"
@@ -103,6 +102,20 @@ export default function Step3Optionals() {
           );
         })}
       </CardContent>
+      <Button
+        size="lg"
+        className="flex items-center w-full max-w-sm ml-auto mr-12 gap-3 px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+        onClick={() => {
+          navigate({
+            search: {
+              ...search,
+              step: search.step + 1,
+            },
+          });
+        }}
+      >
+        Resume
+      </Button>
     </Card>
   );
 }
