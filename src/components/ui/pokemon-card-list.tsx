@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
-import { useId } from "react";
+
 import { GENERATIONS } from "@/utils/consts";
 import type { PokeAPI } from "pokeapi-types";
 
@@ -30,7 +30,6 @@ export function PokemonCardList({
   const navigate = useNavigate();
   const search = useSearch({ from: "/" });
   const shiny = search.version;
-  const id = useId();
 
   const getCurrentGenerationName = () => {
     return GENERATIONS[currentGenerationIndex]?.name || "Inconnue";
@@ -186,19 +185,19 @@ export function PokemonCardList({
 
             return (
               <div
-                key={`${id}-${pokemonValue}`}
+                key={`pkm-${pokemonId}`}
                 className="border-input has-data-[state=checked]:border-primary/50 relative flex flex-col gap-3 rounded-lg border-2 p-4 shadow-sm outline-none hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] transition-all duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-start">
                   <RadioGroupItem
-                    id={`${id}-${pokemonValue}`}
+                    id={`radio-${pokemonValue}`}
                     value={pokemonValue}
                     className="order-1 after:absolute after:inset-0 z-10"
                   />
                 </div>
 
                 <div className="flex justify-center items-center">
-                  <div className="relative">
+                  <div className="relative bg-muted/20 rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Image
                       src={
@@ -210,6 +209,8 @@ export function PokemonCardList({
                       width={90}
                       height={90}
                       alt={pokemonName}
+                      loading="lazy"
+                      decoding="async"
                       className="relative transition-transform duration-200 ease-in-out group-hover:scale-110"
                     />
                   </div>

@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { GENERATIONS } from "@/utils/consts";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
 import BadgesSummary from "./badges-summary";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function Step2Fetcher() {
@@ -166,18 +166,14 @@ export default function Step2Fetcher() {
     isLoadingCurrent,
   ]);
 
-  if (!pokemonsData) {
-    return (
-      <Card className="max-w-full mx-auto">
-        <BadgesSummary />
-        <CardContent>
-          <div className="flex justify-center items-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        </CardContent>
-      </Card>
-    );
+  const lastPokemonsDataRef = useRef<any>(undefined);
+  if (
+    pokemonsData &&
+    (Array.isArray(pokemonsData) ? pokemonsData.length > 0 : true)
+  ) {
+    lastPokemonsDataRef.current = pokemonsData;
   }
+  const displayPokemonsData = pokemonsData ?? lastPokemonsDataRef.current;
 
   if (pokemonsData.error) {
     return (
@@ -204,6 +200,19 @@ export default function Step2Fetcher() {
     );
   }
 
+  if (!displayPokemonsData) {
+    return (
+      <Card className="max-w-full mx-auto">
+        <BadgesSummary />
+        <CardContent>
+          <div className="flex justify-center items-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <>
       <Card className="max-w-full mx-auto">
@@ -212,7 +221,7 @@ export default function Step2Fetcher() {
         <CardContent>
           {selector === "types" && (
             <PokemonCardList
-              data={pokemonsData?.pokemon || []}
+              data={displayPokemonsData?.pokemon || []}
               selector="types"
               currentType={search.type}
               showGenerationBadge={false}
@@ -221,7 +230,7 @@ export default function Step2Fetcher() {
 
           {selector === "generations" && (
             <PokemonCardList
-              data={pokemonsData || []}
+              data={displayPokemonsData || []}
               selector="generations"
               currentGenerationIndex={getCurrentGenerationIndex()}
               showGenerationBadge={false}
@@ -238,7 +247,7 @@ export default function Step2Fetcher() {
                 <span className="capitalize">{search.type}</span>
               </div>
               <PokemonCardList
-                data={pokemonsData || []}
+                data={displayPokemonsData || []}
                 selector="both"
                 currentType={search.type}
                 currentGenerationIndex={getCurrentGenerationIndex()}
