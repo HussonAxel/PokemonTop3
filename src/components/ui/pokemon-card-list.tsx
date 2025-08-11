@@ -60,6 +60,9 @@ export function PokemonCardList({
       return `${pokemonId}-${generationName}`;
     } else if (selector === "optionals" && currentCategory) {
       return `${pokemonId}-${currentCategory}`;
+    } else if (selector === "both" && currentType) {
+      const generationName = getCurrentGenerationName();
+      return `${pokemonId}-${currentType}-${generationName}`;
     }
     return `${pokemonId}`;
   };
@@ -84,6 +87,18 @@ export function PokemonCardList({
       return (
         search.OptionalPokemons.find((p: string) =>
           p.endsWith(`-${currentCategory}`)
+        ) || ""
+      );
+    } else if (
+      selector === "both" &&
+      currentType &&
+      search.pokemons?.length > 0
+    ) {
+      const generationName = getCurrentGenerationName();
+      return (
+        search.pokemons.find(
+          (p: string) =>
+            p.endsWith(`-${currentType}`) && p.includes(`-${generationName}`)
         ) || ""
       );
     }
@@ -130,6 +145,21 @@ export function PokemonCardList({
       return {
         ...search,
         OptionalPokemons: newPokemons,
+      };
+    } else if (selector === "both" && currentType) {
+      const generationName = getCurrentGenerationName();
+      const filteredPokemons =
+        search.pokemons?.filter(
+          (p: string) =>
+            !(p.endsWith(`-${currentType}`) && p.includes(`-${generationName}`))
+        ) || [];
+      const newPokemons = value
+        ? [...filteredPokemons, value]
+        : filteredPokemons;
+
+      return {
+        ...search,
+        pokemons: newPokemons,
       };
     }
 

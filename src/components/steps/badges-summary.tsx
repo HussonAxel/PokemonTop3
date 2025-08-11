@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export default function BadgesSummary() {
   const search = useSearch({ from: "/" });
   const selector = search.selector;
+  const pokemonsOptions = search.pokemonsOptions || [];
   const pokemons = search.pokemons || [];
 
   const step = search.step;
@@ -38,16 +39,22 @@ export default function BadgesSummary() {
         queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
       });
     } else if (selector === "both") {
-      const nextType = getNextType();
-      const nextGeneration = getNextGeneration();
+      // Précharger le type suivant dans la génération courante
+      const currentIndex = getCurrentTypeIndex();
+      const nextIndex = (currentIndex + 1) % filteredTypes.length;
+      const nextType = filteredTypes[nextIndex];
       queryClient.ensureQueryData({
         queryKey: QUERY_KEYS.pokemonsPerTypes(nextType),
         queryFn: () => fetchPokemonsPerType(nextType),
       });
-      queryClient.ensureQueryData({
-        queryKey: QUERY_KEYS.pokemonsPerGenerations(nextGeneration[1]),
-        queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
-      });
+      // Si on boucle au premier type, on précharge aussi la génération suivante
+      if (nextIndex === 0) {
+        const nextGeneration = getNextGeneration();
+        queryClient.ensureQueryData({
+          queryKey: QUERY_KEYS.pokemonsPerGenerations(nextGeneration[1]),
+          queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
+        });
+      }
     }
   };
   const filteredTypes =
@@ -73,6 +80,8 @@ export default function BadgesSummary() {
     }
     return "";
   };
+
+  const getFirstType = () => filteredTypes[0];
 
   const getCurrentTypeIndex = () => {
     return filteredTypes.findIndex((type: string) => type === search.type);
@@ -160,13 +169,18 @@ export default function BadgesSummary() {
 
   const isCurrentBothSelected = () => {
     if (selector === "both" && search.type && search.generation) {
-      const currentGenerationName =
-        GENERATIONS[getCurrentGenerationIndex()]?.name;
-      return pokemons.some(
-        (pokemon: string) =>
-          pokemon.endsWith(`-${search.type}`) &&
-          pokemon.includes(`-${currentGenerationName}`)
-      );
+      const generationStart = parseInt(search.generation[0]);
+      const generationEnd = parseInt(search.generation[1]);
+      return pokemons.some((pokemon: string) => {
+        const [idPart, typePart] = pokemon.split("-");
+        const pokemonId = parseInt(idPart);
+        return (
+          typePart === search.type &&
+          !Number.isNaN(pokemonId) &&
+          pokemonId >= generationStart &&
+          pokemonId <= generationEnd
+        );
+      });
     }
     return false;
   };
@@ -202,20 +216,24 @@ export default function BadgesSummary() {
         .filter(Boolean);
       shouldProceedToNextStep = selectedGenerations.length >= totalGenerations;
     } else if (selector === "both") {
+      // Idéalement: 1 sélection par combinaison type x génération
       shouldProceedToNextStep =
         pokemons.length >= totalTypes * totalGenerations;
     }
 
     if (shouldProceedToNextStep) {
+      // Fin du parcours, passer à l'étape suivante (3 ou 4 selon options)
       navigate({
         to: "/",
         search: {
           ...search,
-          step: search.step + 1,
+          step: search.step + (pokemonsOptions.length === 0 ? 2 : 1),
         },
       });
       return;
     }
+
+    // Continuer le parcours dans le mode courant
     const searchParams: any = { ...search };
 
     if (selector === "types") {
@@ -223,8 +241,16 @@ export default function BadgesSummary() {
     } else if (selector === "generations") {
       searchParams.generation = getNextGeneration();
     } else if (selector === "both") {
-      searchParams.type = getNextType();
-      searchParams.generation = getNextGeneration();
+      // Itération: types d'abord dans la génération courante
+      const currentTypeIndex = getCurrentTypeIndex();
+      const isLastType = currentTypeIndex === filteredTypes.length - 1;
+      if (isLastType) {
+        // Revenir au premier type et passer à la génération suivante
+        searchParams.type = getFirstType();
+        searchParams.generation = getNextGeneration();
+      } else {
+        searchParams.type = getNextType();
+      }
     }
 
     navigate({ search: searchParams });

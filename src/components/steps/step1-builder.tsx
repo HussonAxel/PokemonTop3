@@ -48,6 +48,7 @@ export default function Step1Builder({ search }: { search: any }) {
     no: "Sélection libre sans contrainte d'équipe",
   };
 
+  console.log(search);
   return (
     <div className="max-w-4xl mx-auto my-16">
       {/* En-tête avec gradient */}

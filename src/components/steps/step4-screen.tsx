@@ -15,6 +15,7 @@ export default function Step4Screen() {
   const pokemonsSelected = search.pokemons || [];
   const pokemonsOptions = search.pokemonsOptions || [];
   const OptionalPokemons = search.OptionalPokemons || [];
+  const selector = search.selector || "optionals";
 
   const getPokemonId = (pokemonString: string) => {
     return pokemonString.split("-")[0];
@@ -23,6 +24,14 @@ export default function Step4Screen() {
   const getPokemonType = (pokemonString: string) => {
     const parts = pokemonString.split("-");
     return parts.length > 1 ? parts[1] : null;
+  };
+
+  const getTypeColorClass = (type: string | null) => {
+    if (!type || selector !== "types") return "";
+
+    // Convertir le type en classe CSS correspondante
+    const typeClass = type.toLowerCase();
+    return `bg-${typeClass} border-${typeClass}`;
   };
 
   const getPokemonName = (pokemonId: string) => {
@@ -52,7 +61,7 @@ export default function Step4Screen() {
                   return (
                     <Card
                       key={`selected-${index}`}
-                      className="hover:shadow-md transition-all duration-175 border-primary/30"
+                      className={`hover:shadow-md transition-all duration-175 ${getTypeColorClass(pokemonType)}`}
                     >
                       <CardContent className="p-4 text-center">
                         <div className="relative mb-3">
@@ -65,11 +74,16 @@ export default function Step4Screen() {
                             className="mx-auto"
                           />
                         </div>
-                        <h4 className="font-semibold text-sm mb-2">
+                        <h4
+                          className={`font-semibold text-sm mb-2 ${selector === "types" && pokemonType ? "text-white" : ""}`}
+                        >
                           {getPokemonName(pokemonId)}
                         </h4>
                         {pokemonType && (
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge
+                            variant="outline"
+                            className={`text-xs ${selector === "types" ? "bg-white/20 text-white border-white/30" : ""}`}
+                          >
                             {pokemonType}
                           </Badge>
                         )}
@@ -106,7 +120,7 @@ export default function Step4Screen() {
                   return (
                     <Card
                       key={`optional-${index}`}
-                      className="hover:shadow-md transition-all duration-175 border-green-175"
+                      className={`hover:shadow-md transition-all duration-175 ${getTypeColorClass(pokemonType)}`}
                     >
                       <CardContent className="p-4 text-center">
                         <div className="relative mb-3">
@@ -119,11 +133,16 @@ export default function Step4Screen() {
                             className="mx-auto"
                           />
                         </div>
-                        <h4 className="font-semibold text-sm mb-2">
+                        <h4
+                          className={`font-semibold text-sm mb-2 ${selector === "types" && pokemonType ? "text-white" : ""}`}
+                        >
                           {getPokemonName(pokemonId)}
                         </h4>
                         {pokemonType && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge
+                            variant="outline"
+                            className={`text-xs ${selector === "types" ? "bg-white/20 text-white border-white/30" : ""}`}
+                          >
                             {pokemonType}
                           </Badge>
                         )}

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   useGetPokemonsPerType,
   useGetPokemonsPerGeneration,
+  useGetTypes,
 } from "@/services/pokemons";
 import { PokemonCardList } from "@/components/ui/pokemon-card-list";
 
@@ -11,28 +12,43 @@ import { Badge } from "@/components/ui/badge";
 import { GENERATIONS } from "@/utils/consts";
 import { extractPokemonIdFromUrl } from "@/utils/functions";
 import BadgesSummary from "./badges-summary";
+import { useEffect, useMemo } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function Step2Fetcher() {
   const search = useSearch({ from: "/" });
   const selector = search.selector;
   const generation = search.generation;
+  const navigate = useNavigate();
 
-  let pokemonsData;
+  const { data: typesData } = useGetTypes();
+  const filteredTypes: string[] = useMemo(
+    () =>
+      typesData?.results
+        ?.filter((t: any) => t.name !== "unknown" && t.name !== "stellar")
+        .map((t: any) => t.name) || [],
+    [typesData]
+  );
+
+  let pokemonsData: any;
+  let isLoadingCurrent = false;
 
   if (selector === "types") {
-    pokemonsData = useGetPokemonsPerType(search.type || "").data;
+    const typeQuery = useGetPokemonsPerType(search.type || "");
+    pokemonsData = typeQuery.data;
+    isLoadingCurrent = !!(typeQuery.isLoading || typeQuery.isFetching);
   } else if (selector === "generations") {
-    pokemonsData = useGetPokemonsPerGeneration(
-      search.generation?.[1] || ""
-    ).data?.results.slice(
+    const genQuery = useGetPokemonsPerGeneration(search.generation?.[1] || "");
+    pokemonsData = genQuery.data?.results.slice(
       generation?.[0] ? parseInt(generation[0]) - 1 : 0,
       generation?.[1] ? parseInt(generation[1]) : 0
     );
+    isLoadingCurrent = !!(genQuery.isLoading || genQuery.isFetching);
   } else if (selector === "both") {
-    const pokemonsDataTypes = useGetPokemonsPerType(search.type || "").data;
-    const pokemonsDataGenerations = useGetPokemonsPerGeneration(
-      search.generation?.[1] || ""
-    ).data?.results.slice(
+    const typeQuery = useGetPokemonsPerType(search.type || "");
+    const genQuery = useGetPokemonsPerGeneration(search.generation?.[1] || "");
+    const pokemonsDataTypes = typeQuery.data;
+    const pokemonsDataGenerations = genQuery.data?.results.slice(
       generation?.[0] ? parseInt(generation[0]) - 1 : 0,
       generation?.[1] ? parseInt(generation[1]) : 0
     );
@@ -47,8 +63,15 @@ export default function Step2Fetcher() {
         return generationPokemonIds.includes(pokemonId);
       });
     } else {
-      pokemonsData = pokemonsDataTypes?.pokemon || [];
+      // Attendre que les deux datasets soient disponibles avant de décider si c'est vide
+      pokemonsData = undefined;
     }
+    isLoadingCurrent = !!(
+      typeQuery.isLoading ||
+      typeQuery.isFetching ||
+      genQuery.isLoading ||
+      genQuery.isFetching
+    );
   }
 
   const getCurrentGenerationIndex = () => {
@@ -56,6 +79,108 @@ export default function Step2Fetcher() {
     const currentEnd = parseInt(search.generation[1]);
     return GENERATIONS.findIndex((gen) => gen.end === currentEnd);
   };
+
+  // Helpers pour l'itération
+  const getCurrentTypeIndex = () =>
+    filteredTypes.findIndex((t) => t === search.type);
+  const getNextType = () => {
+    const i = getCurrentTypeIndex();
+    const next = (i + 1) % (filteredTypes.length || 1);
+    return filteredTypes[next];
+  };
+  const getFirstType = () => filteredTypes[0];
+  const getNextGeneration = () => {
+    const i = getCurrentGenerationIndex();
+    const next = (i + 1) % GENERATIONS.length;
+    return [
+      GENERATIONS[next].start.toString(),
+      GENERATIONS[next].end.toString(),
+    ];
+  };
+
+  const arraysEqual = (a?: string[], b?: string[]) => {
+    if (!a || !b) return false;
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+  };
+
+  // Redirection automatique si la liste est vide (et seulement quand ce n'est plus en chargement)
+  useEffect(() => {
+    if (isLoadingCurrent) return;
+
+    if (selector === "types") {
+      if (
+        filteredTypes.length > 0 &&
+        typeof search.type === "string" &&
+        pokemonsData &&
+        Array.isArray(pokemonsData.pokemon) &&
+        pokemonsData.pokemon.length === 0
+      ) {
+        const nextType = getNextType();
+        if (nextType && nextType !== search.type) {
+          navigate({
+            to: "/",
+            search: {
+              ...search,
+              type: nextType,
+            },
+          });
+        }
+      }
+    } else if (selector === "generations") {
+      if (
+        Array.isArray(pokemonsData) &&
+        pokemonsData.length === 0 &&
+        Array.isArray(search.generation) &&
+        search.generation.length === 2
+      ) {
+        const nextGen = getNextGeneration();
+        if (!arraysEqual(nextGen, search.generation)) {
+          navigate({
+            to: "/",
+            search: {
+              ...search,
+              generation: nextGen,
+            },
+          });
+        }
+      }
+    } else if (selector === "both") {
+      if (
+        Array.isArray(pokemonsData) &&
+        pokemonsData.length === 0 &&
+        filteredTypes.length > 0 &&
+        typeof search.type === "string" &&
+        Array.isArray(search.generation) &&
+        search.generation.length === 2
+      ) {
+        const isLastType = getCurrentTypeIndex() === filteredTypes.length - 1;
+        const nextType = isLastType ? getFirstType() : getNextType();
+        const nextGen = isLastType ? getNextGeneration() : search.generation;
+        const shouldNavigate =
+          (nextType && nextType !== search.type) ||
+          !arraysEqual(nextGen, search.generation);
+        if (shouldNavigate && nextType) {
+          navigate({
+            to: "/",
+            search: {
+              ...search,
+              type: nextType,
+              generation: nextGen,
+            },
+          });
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    selector,
+    JSON.stringify(pokemonsData),
+    filteredTypes.join("|"),
+    search.type,
+    search.generation?.[0],
+    search.generation?.[1],
+    isLoadingCurrent,
+  ]);
 
   if (!pokemonsData) {
     return (
@@ -120,13 +245,22 @@ export default function Step2Fetcher() {
           )}
 
           {selector === "both" && (
-            <PokemonCardList
-              data={pokemonsData || []}
-              selector="types"
-              currentType={search.type}
-              currentGenerationIndex={getCurrentGenerationIndex()}
-              showGenerationBadge={false}
-            />
+            <div className="space-y-4">
+              <div className="text-center text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">
+                  {GENERATIONS[getCurrentGenerationIndex()]?.name || "Inconnue"}
+                </span>
+                {" — "}
+                <span className="capitalize">{search.type}</span>
+              </div>
+              <PokemonCardList
+                data={pokemonsData || []}
+                selector="both"
+                currentType={search.type}
+                currentGenerationIndex={getCurrentGenerationIndex()}
+                showGenerationBadge={false}
+              />
+            </div>
           )}
         </CardContent>
       </Card>

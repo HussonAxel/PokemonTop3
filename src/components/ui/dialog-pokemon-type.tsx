@@ -85,8 +85,8 @@ export default function DialogPokemonType({
                 to={"/"}
                 search={{
                   ...search,
-                  pokemonsType: [
-                    ...(search.pokemonsType || []),
+                  pokemonsOptions: [
+                    ...(search.pokemonsOptions || []),
                     pokemon.pokemon.name,
                   ],
                 }}
