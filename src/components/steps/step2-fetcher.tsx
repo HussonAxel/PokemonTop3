@@ -117,13 +117,7 @@ export default function Step2Fetcher() {
       ) {
         const nextType = getNextType();
         if (nextType && nextType !== search.type) {
-          navigate({
-            to: "/",
-            search: {
-              ...search,
-              type: nextType,
-            },
-          });
+          navigate({ to: "/", search: { ...search, type: nextType } });
         }
       }
     } else if (selector === "generations") {
@@ -135,13 +129,7 @@ export default function Step2Fetcher() {
       ) {
         const nextGen = getNextGeneration();
         if (!arraysEqual(nextGen, search.generation)) {
-          navigate({
-            to: "/",
-            search: {
-              ...search,
-              generation: nextGen,
-            },
-          });
+          navigate({ to: "/", search: { ...search, generation: nextGen } });
         }
       }
     } else if (selector === "both") {
@@ -162,11 +150,7 @@ export default function Step2Fetcher() {
         if (shouldNavigate && nextType) {
           navigate({
             to: "/",
-            search: {
-              ...search,
-              type: nextType,
-              generation: nextGen,
-            },
+            search: { ...search, type: nextType, generation: nextGen },
           });
         }
       }
