@@ -1,6 +1,5 @@
 import { Badge } from "../ui/badge";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Hash } from "lucide-react";
 import { useSearch } from "@tanstack/react-router";
 import { CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
@@ -39,7 +38,7 @@ export default function BadgesSummary() {
         queryFn: () => fetchPokemonsPerGeneration(nextGeneration[1]),
       });
     } else if (selector === "both") {
-      // Précharger le type suivant dans la génération courante
+      // Preload next type in current generation
       const currentIndex = getCurrentTypeIndex();
       const nextIndex = (currentIndex + 1) % filteredTypes.length;
       const nextType = filteredTypes[nextIndex];
@@ -47,7 +46,7 @@ export default function BadgesSummary() {
         queryKey: QUERY_KEYS.pokemonsPerTypes(nextType),
         queryFn: () => fetchPokemonsPerType(nextType),
       });
-      // Si on boucle au premier type, on précharge aussi la génération suivante
+      // If we loop to first type, also preload next generation
       if (nextIndex === 0) {
         const nextGeneration = getNextGeneration();
         queryClient.ensureQueryData({
@@ -69,14 +68,14 @@ export default function BadgesSummary() {
       const selectedTypes = pokemons
         .map((p: string) => p.split("-")[1])
         .filter(Boolean);
-      return `${selectedTypes.length}/${filteredTypes.length} types sélectionnés`;
+      return `${selectedTypes.length}/${filteredTypes.length} types selected`;
     } else if (selector === "generations") {
       const selectedGenerations = pokemons
         .map((p: string) => p.split("-")[1])
         .filter(Boolean);
-      return `${selectedGenerations.length}/${GENERATIONS.length} générations sélectionnées`;
+      return `${selectedGenerations.length}/${GENERATIONS.length} generations selected`;
     } else if (selector === "both") {
-      return `${pokemons.length} Pokémon sélectionnés`;
+      return `${pokemons.length} Pokémon selected`;
     }
     return "";
   };
@@ -196,7 +195,7 @@ export default function BadgesSummary() {
     }
 
     if (!isSelected) {
-      console.log("Aucun Pokémon sélectionné pour le type/génération actuel");
+      console.log("No Pokémon selected for current type/generation");
       return;
     }
 
@@ -216,13 +215,13 @@ export default function BadgesSummary() {
         .filter(Boolean);
       shouldProceedToNextStep = selectedGenerations.length >= totalGenerations;
     } else if (selector === "both") {
-      // Idéalement: 1 sélection par combinaison type x génération
+      // Ideally: 1 selection per type x generation combination
       shouldProceedToNextStep =
         pokemons.length >= totalTypes * totalGenerations;
     }
 
     if (shouldProceedToNextStep) {
-      // Fin du parcours, passer à l'étape suivante (3 ou 4 selon options)
+      // End of journey, go to next step (3 or 4 depending on options)
       navigate({
         to: "/",
         search: {
@@ -233,7 +232,7 @@ export default function BadgesSummary() {
       return;
     }
 
-    // Continuer le parcours dans le mode courant
+    // Continue journey in current mode
     const searchParams: any = { ...search };
 
     if (selector === "types") {
@@ -241,11 +240,11 @@ export default function BadgesSummary() {
     } else if (selector === "generations") {
       searchParams.generation = getNextGeneration();
     } else if (selector === "both") {
-      // Itération: types d'abord dans la génération courante
+      // Iteration: types first in current generation
       const currentTypeIndex = getCurrentTypeIndex();
       const isLastType = currentTypeIndex === filteredTypes.length - 1;
       if (isLastType) {
-        // Revenir au premier type et passer à la génération suivante
+        // Go back to first type and move to next generation
         searchParams.type = getFirstType();
         searchParams.generation = getNextGeneration();
       } else {
@@ -263,16 +262,15 @@ export default function BadgesSummary() {
           <CardHeader className="text-center pb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Badge variant="secondary" className="text-sm font-medium">
-                Étape 1
+                Step 1
               </Badge>
             </div>
             <CardTitle className="text-4xl font-bold">
-              Configuration du Picker
+              Picker Configuration
             </CardTitle>
             <CardDescription className="text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
-              Personnalisez votre expérience de sélection de Pokémon. Choisissez
-              votre méthode de navigation, vos préférences visuelles et les
-              options avancées.
+              Customize your Pokémon selection experience. Choose your navigation
+              method, visual preferences and advanced options.
             </CardDescription>
           </CardHeader>
         </div>
@@ -281,11 +279,11 @@ export default function BadgesSummary() {
         <CardHeader className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
             <Badge variant="secondary" className="text-sm font-medium">
-              Étape {search.step}
+              Step {search.step}
             </Badge>
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-            Sélection des Pokémon
+            Pokémon Selection
           </CardTitle>
 
           <div className="text-sm text-muted-foreground">
@@ -299,42 +297,9 @@ export default function BadgesSummary() {
               className="flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              Précédent
+              Previous
             </Button>
-
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground bg-muted/50 px-4 py-2 rounded-lg border">
-              <Hash className="w-4 h-4" />
-              {selector === "types" && (
-                <span>
-                  Type:{" "}
-                  <span className="capitalize font-semibold text-foreground">
-                    {search.type}
-                  </span>
-                </span>
-              )}
-              {selector === "generations" && (
-                <span>
-                  <span className="font-semibold text-foreground">
-                    {GENERATIONS[getCurrentGenerationIndex()]?.name ||
-                      "Inconnue"}
-                  </span>
-                </span>
-              )}
-              {selector === "both" && (
-                <span>
-                  Type:{" "}
-                  <span className="capitalize font-semibold text-foreground">
-                    {search.type}
-                  </span>{" "}
-                  | Génération:{" "}
-                  <span className="font-semibold text-foreground">
-                    {GENERATIONS[getCurrentGenerationIndex()]?.name ||
-                      "Inconnue"}
-                  </span>
-                </span>
-              )}
-            </div>
-
+            
             <Button
               variant="outline"
               onClick={navigateToNext}
@@ -347,7 +312,7 @@ export default function BadgesSummary() {
                 (selector === "both" && !isCurrentBothSelected())
               }
             >
-              Suivant
+              Next
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>

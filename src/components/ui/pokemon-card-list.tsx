@@ -171,7 +171,7 @@ export function PokemonCardList({
 
       <div className="relative">
         <RadioGroup
-          className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-4 p-6 rounded-lg border border-border/50"
+          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 md:gap-4 md:p-6 rounded-lg md:border md:border-border/50"
           defaultValue={getDefaultValue()}
           onValueChange={(value) => {
             const newSearch = getSearchParams(value);
@@ -188,7 +188,7 @@ export function PokemonCardList({
                 key={`pkm-${pokemonId}`}
                 className="border-input has-data-[state=checked]:border-primary/50 relative flex flex-col gap-3 rounded-lg border-2 p-4 shadow-sm outline-none hover:border-primary/50 hover:shadow-md hover:scale-[103%] active:scale-[98%] transition-all duration-200 ease-in-out"
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-end">
                   <RadioGroupItem
                     id={`radio-${pokemonValue}`}
                     value={pokemonValue}

@@ -23,6 +23,7 @@ export const pokemonsOptions = [
   { value: "megaEvolutions", label: "Mega Evolutions" },
   { value: "gigantamaxPokemon", label: "Gigantamax Pokémon" },
   { value: "pseudoLegend", label: "Pseudo Legend" },
+  { value: "pseudoLegendEvolutions", label: "Pseudo Legend Evolutions" },
   { value: "ultraBeasts", label: "Ultra Beasts" },
   { value: "paradox", label: "Paradox" },
   { value: "boxLegendary", label: "Box Legendary" },
@@ -85,66 +86,229 @@ export const GENERATIONS = [
 ];
 
 export const regionalBird = [
+  // Pidgey line
   { name: "Pidgey", id: 16 },
+  { name: "Pidgeotto", id: 17 },
+  { name: "Pidgeot", id: 18 },
+  { name: "Pidgeot (Mega)", id: 10073 },
+
+  // Spearow line
   { name: "Spearow", id: 21 },
+  { name: "Fearow", id: 22 },
+
+  // Hoothoot line
   { name: "Hoothoot", id: 163 },
+  { name: "Noctowl", id: 164 },
+
+  // Taillow line
   { name: "Taillow", id: 276 },
+  { name: "Swellow", id: 277 },
+
+  // Wingull line
   { name: "Wingull", id: 278 },
+  { name: "Pelipper", id: 279 },
+
+  // Starly line
   { name: "Starly", id: 396 },
+  { name: "Staravia", id: 397 },
+  { name: "Staraptor", id: 398 },
+
+  // Pidove line
   { name: "Pidove", id: 519 },
+  { name: "Tranquill", id: 520 },
+  { name: "Unfezant", id: 521 },
+
+  // Fletchling line
   { name: "Fletchling", id: 661 },
+  { name: "Fletchinder", id: 662 },
+  { name: "Talonflame", id: 663 },
+
+  // Pikipek line
   { name: "Pikipek", id: 731 },
+  { name: "Trumbeak", id: 732 },
+  { name: "Toucannon", id: 733 },
+
+  // Rookidee line
   { name: "Rookidee", id: 821 },
+  { name: "Corvisquire", id: 822 },
+  { name: "Corviknight", id: 823 },
+  { name: "Corviknight (Gigantamax)", id: 10212 },
+
+  // Squawkabilly line
   { name: "Squawkabilly", id: 931 },
+
+  // Wattrel line
   { name: "Wattrel", id: 940 },
+  { name: "Kilowattrel", id: 941 },
 ];
 
 export const regionalMammal = [
+  // Rattata line
   { name: "Rattata", id: 19 },
-  { name: "Sentret", id: 161 },
-  { name: "Zigzagoon", id: 263 },
-  { name: "Bidoof", id: 399 },
-  { name: "Patrat", id: 504 },
-  { name: "Bunnelby", id: 659 },
-  { name: "Yungoos", id: 734 },
+  { name: "Raticate", id: 20 },
   { name: "Rattata (Alola)", id: 10091 },
-  { name: "Skwovet", id: 819 },
+  { name: "Raticate (Alola)", id: 10092 },
+
+  // Sentret line
+  { name: "Sentret", id: 161 },
+  { name: "Furret", id: 162 },
+
+  // Zigzagoon line
+  { name: "Zigzagoon", id: 263 },
+  { name: "Linoone", id: 264 },
   { name: "Zigzagoon (Galar)", id: 10174 },
+  { name: "Linoone (Galar)", id: 10175 },
+  { name: "Obstagoon", id: 862 }, // Evolution of Galarian Linoone
+
+  // Bidoof line
+  { name: "Bidoof", id: 399 },
+  { name: "Bibarel", id: 400 },
+
+  // Patrat line
+  { name: "Patrat", id: 504 },
+  { name: "Watchog", id: 505 },
+
+  // Bunnelby line
+  { name: "Bunnelby", id: 659 },
+  { name: "Diggersby", id: 660 },
+
+  // Yungoos line
+  { name: "Yungoos", id: 734 },
+  { name: "Gumshoos", id: 735 },
+
+  // Skwovet line
+  { name: "Skwovet", id: 819 },
+  { name: "Greedent", id: 820 },
+
+  // Lechonk line
   { name: "Lechonk", id: 915 },
+  { name: "Oinkologne", id: 916 },
+  { name: "Oinkologne (Female)", id: 10193 },
 ];
 
 export const bug = [
+  // Caterpie line
   { name: "Caterpie", id: 10 },
+  { name: "Metapod", id: 11 },
+  { name: "Butterfree", id: 12 },
+  { name: "Butterfree (Gigantamax)", id: 10198 },
+
+  // Weedle line
   { name: "Weedle", id: 13 },
+  { name: "Kakuna", id: 14 },
+  { name: "Beedrill", id: 15 },
+  { name: "Beedrill (Mega)", id: 10090 },
+
+  // Ledyba line
   { name: "Ledyba", id: 165 },
+  { name: "Ledian", id: 166 },
+
+  // Spinarak line
   { name: "Spinarak", id: 167 },
+  { name: "Ariados", id: 168 },
+
+  // Wurmple line
   { name: "Wurmple", id: 265 },
+  { name: "Silcoon", id: 266 },
+  { name: "Cascoon", id: 267 },
+  { name: "Beautifly", id: 268 },
+  { name: "Dustox", id: 269 },
+
+  // Kricketot line
   { name: "Kricketot", id: 401 },
+  { name: "Kricketune", id: 402 },
+
+  // Sewaddle line
   { name: "Sewaddle", id: 540 },
+  { name: "Swadloon", id: 541 },
+  { name: "Leavanny", id: 542 },
+
+  // Venipede line
   { name: "Venipede", id: 543 },
+  { name: "Whirlipede", id: 544 },
+  { name: "Scolipede", id: 545 },
+
+  // Scatterbug line
   { name: "Scatterbug", id: 664 },
+  { name: "Spewpa", id: 665 },
+  { name: "Vivillon", id: 666 },
+
+  // Grubbin line
   { name: "Grubbin", id: 736 },
+  { name: "Charjabug", id: 737 },
+  { name: "Vikavolt", id: 738 },
+
+  // Blipbug line
   { name: "Blipbug", id: 824 },
+  { name: "Dottler", id: 825 },
+  { name: "Orbeetle", id: 826 },
+  { name: "Orbeetle (Gigantamax)", id: 10213 },
+
+  // Tarountula line
   { name: "Tarountula", id: 917 },
+  { name: "Spidops", id: 918 },
+
+  // Nymble line
   { name: "Nymble", id: 919 },
+  { name: "Lokix", id: 920 },
 ];
 
 export const pseudoLegend = [
+  // Dragonite line
+  { name: "Dratini", id: 147 },
+  { name: "Dragonair", id: 148 },
   { name: "Dragonite", id: 149 },
+
+  // Tyranitar line
+  { name: "Larvitar", id: 246 },
+  { name: "Pupitar", id: 247 },
   { name: "Tyranitar", id: 248 },
-  { name: "Salamence", id: 373 },
-  { name: "Metagross", id: 376 },
-  { name: "Garchomp", id: 445 },
-  { name: "Hydreigon", id: 635 },
-  { name: "Goodra", id: 706 },
-  { name: "Kommo-o", id: 784 },
-  { name: "Dragapult", id: 887 },
-  { name: "Goodra (Hisui)", id: 10242 },
-  { name: "Baxcalibur", id: 998 },
   { name: "Tyranitar (Mega)", id: 10049 },
+
+  // Salamence line
+  { name: "Bagon", id: 371 },
+  { name: "Shelgon", id: 372 },
+  { name: "Salamence", id: 373 },
   { name: "Salamence (Mega)", id: 10089 },
+
+  // Metagross line
+  { name: "Beldum", id: 374 },
+  { name: "Metang", id: 375 },
+  { name: "Metagross", id: 376 },
   { name: "Metagross (Mega)", id: 10076 },
+
+  // Garchomp line
+  { name: "Gible", id: 443 },
+  { name: "Gabite", id: 444 },
+  { name: "Garchomp", id: 445 },
   { name: "Garchomp (Mega)", id: 10058 },
+
+  // Hydreigon line
+  { name: "Deino", id: 633 },
+  { name: "Zweilous", id: 634 },
+  { name: "Hydreigon", id: 635 },
+
+  // Goodra line
+  { name: "Goomy", id: 704 },
+  { name: "Sliggoo", id: 705 },
+  { name: "Goodra", id: 706 },
+  { name: "Sliggoo (Hisui)", id: 10241 },
+  { name: "Goodra (Hisui)", id: 10242 },
+
+  // Kommo-o line
+  { name: "Jangmo-o", id: 782 },
+  { name: "Hakamo-o", id: 783 },
+  { name: "Kommo-o", id: 784 },
+
+  // Dragapult line
+  { name: "Dreepy", id: 885 },
+  { name: "Drakloak", id: 886 },
+  { name: "Dragapult", id: 887 },
+
+  // Baxcalibur line
+  { name: "Frigibax", id: 996 },
+  { name: "Arctibax", id: 997 },
+  { name: "Baxcalibur", id: 998 },
 ];
 
 export const pikachuClone = [

@@ -37,40 +37,40 @@ export default function Step1Builder({ search }: { search: any }) {
   const prefetchPokemons = prefetchPokemonPerType();
   const prefetchPokemonsGeneration = prefetchPokemonsPerGeneration();
 
-  // Descriptions pour chaque option
+  // Descriptions for each option
   const optionDescriptions = {
-    generations: "Parcourez les Pokémon par génération (Kanto, Johto, etc.)",
-    types: "Explorez les Pokémon par types élémentaires (Feu, Eau, etc.)",
-    both: "Combinez les critères de génération et de type",
+    generations: "Browse Pokémon by generation (Kanto, Johto, etc.)",
+    types: "Explore Pokémon by elemental types (Fire, Water, etc.)",
+    both: "Combine generation and type criteria",
     normal: "Use classic sugimori sprites",
     shiny: "Use shinies sprites instead of basic",
-    yes: "Créer une équipe complète de 6 Pokémon",
-    no: "Sélection libre sans contrainte d'équipe",
+    yes: "Create a complete team of 6 Pokémon",
+    no: "Free selection without team constraints",
   };
 
   console.log(search);
   return (
     <div className="max-w-4xl mx-auto my-16">
-      {/* En-tête avec gradient */}
-      <Card className="overflow-hidden">
+      {/* Header with gradient */}
+      <Card className="overflow-hidden border-none">
         <BadgesSummary />
 
         <CardContent className="space-y-8 pb-8">
-          {/* Sélecteur de méthode */}
+          {/* Method selector */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-primary/10"></div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">
-                  Méthode de sélection
+                  Selection Method
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Comment souhaitez-vous parcourir les Pokémon ?
+                  How would you like to browse Pokémon?
                 </p>
               </div>
             </div>
 
-            <RadioGroup className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <RadioGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {pickerSelector.map((item) => (
                 <Link
                   key={item.value}
@@ -114,21 +114,21 @@ export default function Step1Builder({ search }: { search: any }) {
 
           <Separator />
 
-          {/* Sélecteur de version */}
+          {/* Version selector */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-primary/10"></div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">
-                  Version des Pokémon
+                  Pokémon Version
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Choisissez l'apparence des Pokémon à afficher
+                  Choose the appearance of Pokémon to display
                 </p>
               </div>
             </div>
 
-            <RadioGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <RadioGroup className="grid grid-cols-2 gap-4">
               {pokemonStatusVersion.map((item) => (
                 <Link
                   key={item.value}
@@ -168,16 +168,16 @@ export default function Step1Builder({ search }: { search: any }) {
 
           <Separator />
 
-          {/* Options de Pokémon */}
+          {/* Pokémon options */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-primary/10"></div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">
-                  Catégories optionnelles
+                  Optional Categories
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Sélectionnez les catégories spéciales de Pokémon à inclure
+                  Select special Pokémon categories to include
                 </p>
               </div>
             </div>
@@ -200,7 +200,7 @@ export default function Step1Builder({ search }: { search: any }) {
                       pokemonsOptions: newPokemonsOptions,
                     }}
                   >
-                    <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-2 rounded-md border px-3 py-4 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
+                    <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-2 rounded-md border px-3 py-8 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
                       <Checkbox
                         id={`${id}-option-${item.value}`}
                         checked={isChecked}
@@ -223,44 +223,34 @@ export default function Step1Builder({ search }: { search: any }) {
                 );
               })}
             </div>
-
-            {search.pokemonsOptions.length > 0 && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
-                <span>
-                  {search.pokemonsOptions.length} catégorie
-                  {search.pokemonsOptions.length > 1 ? "s" : ""} sélectionnée
-                  {search.pokemonsOptions.length > 1 ? "s" : ""}
-                </span>
-              </div>
-            )}
           </div>
 
           <Separator />
 
-          {/* Configuration de l'équipe */}
+          {/* Team configuration */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-primary/10"></div>
                 <div>
                   <h3 className="text-xl font-semibold text-foreground">
-                    Mode équipe
+                    Team Mode
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Souhaitez-vous créer une équipe complète ?
+                    Would you like to create a complete team?
                   </p>
                 </div>
               </div>
             </div>
 
-            <RadioGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <RadioGroup className="grid grid-cols-2 gap-4">
               {SelectRoster.map((item) => (
                 <Link
                   key={item.value}
                   to={`/`}
                   search={{ ...search, selectRoster: item.value }}
                 >
-                  <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-4 py-6 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]">
+                  <div className="border-input has-data-[state=checked]:border-primary/50 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-4 py-6 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] h-full">
                     <RadioGroupItem
                       id={`${id}-roster-${item.value}`}
                       value={item.value}
@@ -291,10 +281,10 @@ export default function Step1Builder({ search }: { search: any }) {
             </RadioGroup>
           </div>
 
-          {/* Bouton Start Picker modernisé */}
+          {/* Modernized Start Picker button */}
           <Button
             size="lg"
-            className="flex items-center gap-3 px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ml-auto"
+            className="flex items-center w-full py-6 text-lg font-semibold shadow-lg cursor-pointer"
             onClick={() => {
               navigate({
                 resetScroll: false,
@@ -326,7 +316,7 @@ export default function Step1Builder({ search }: { search: any }) {
               }
             }}
           >
-            Commencer la sélection
+            Start Selection
           </Button>
         </CardContent>
       </Card>

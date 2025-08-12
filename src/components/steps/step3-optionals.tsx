@@ -101,10 +101,9 @@ export default function Step3Optionals() {
             </div>
           );
         })}
-      </CardContent>
       <Button
         size="lg"
-        className="flex items-center w-full max-w-sm ml-auto mr-12 gap-3 px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+        className="flex items-center w-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={() => {
           navigate({
             search: {
@@ -116,6 +115,7 @@ export default function Step3Optionals() {
       >
         Resume
       </Button>
+      </CardContent>
     </Card>
   );
 }
