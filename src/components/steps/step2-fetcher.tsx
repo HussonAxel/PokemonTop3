@@ -175,7 +175,7 @@ export default function Step2Fetcher() {
   }
   const displayPokemonsData = pokemonsData ?? lastPokemonsDataRef.current;
 
-  if (pokemonsData.error) {
+  if (pokemonsData?.error) {
     return (
       <Card className="max-w-full mx-auto">
         <CardHeader className="text-center space-y-4">
@@ -193,7 +193,7 @@ export default function Step2Fetcher() {
         </CardHeader>
         <CardContent>
           <div className="text-red-500 text-center">
-            Erreur: {pokemonsData.error.message}
+            Erreur: {pokemonsData.error?.message || "Erreur inconnue"}
           </div>
         </CardContent>
       </Card>
