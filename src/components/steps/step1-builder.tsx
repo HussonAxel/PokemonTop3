@@ -50,7 +50,7 @@ export default function Step1Builder({ search }: { search: any }) {
 
   console.log(search);
   return (
-    <div className="max-w-4xl mx-auto my-16">
+    <div className="max-w-6xl mx-auto my-16">
       {/* Header with gradient */}
       <Card className="overflow-hidden border-none">
         <BadgesSummary />
