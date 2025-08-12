@@ -516,3 +516,103 @@ code {
 .bg-water path {
   fill: #539ddf
 }
+
+/* General style for all category backgrounds */
+[class^="bg-"] {
+  background-size: 200% 200%;
+  background-position: center;
+  border-radius: 0.75rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Example: Starters */
+.bg-starters {
+  background: linear-gradient(135deg, #ff4e50, #1fa2ff);
+}
+
+/* Regional Bird */
+.bg-regionalbird {
+  background: linear-gradient(135deg, #56ab2f, #a8e063);
+}
+
+/* Regional Mammal */
+.bg-regionalmammal {
+  background: linear-gradient(135deg, #ff9966, #ff5e62);
+}
+
+/* Fossil */
+.bg-fossil {
+  background: linear-gradient(135deg, #8e9eab, #eef2f3);
+}
+
+/* Baby Pokémon */
+.bg-babypokemon {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+/* Pikachu Clone */
+.bg-pikachuclone {
+  background: linear-gradient(135deg, #f6d365, #fda085);
+}
+
+/* Eevee Form */
+.bg-eeveeform {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+
+/* Regional Form */
+.bg-regionalform {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+}
+
+/* New Evolution Forms */
+.bg-newevolutionforms {
+  background: linear-gradient(135deg, #cfd9df, #e2ebf0);
+}
+
+/* Mega Evolutions */
+.bg-megaevolutions {
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+
+/* Gigantamax Pokémon */
+.bg-gigantamaxpokemon {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+/* Pseudo Legend */
+.bg-pseudolegend {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+/* Pseudo Legend Evolutions */
+.bg-pseudolegendevolutions {
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+}
+
+/* Ultra Beasts */
+.bg-ultrabeasts {
+  background: linear-gradient(135deg, #7f00ff, #e100ff);
+}
+
+/* Paradox */
+.bg-paradox {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+/* Box Legendary */
+.bg-boxlegendary {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+/* Legendary */
+.bg-legendary {
+  background: linear-gradient(135deg, #ff512f, #dd2476);
+}
+
+/* Mythicals */
+.bg-mythicals {
+  background: linear-gradient(135deg, #fc5c7d, #6a82fb);
+}
